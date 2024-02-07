@@ -2,31 +2,61 @@ package com.example.apilist_sergiherrador.View
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.apilist_sergiherrador.Model.GhibliFilm
-import com.example.apilist_sergiherrador.R
+import androidx.navigation.NavController
+import com.example.apilist_sergiherrador.Model.DataItem
+import com.example.apilist_sergiherrador.ViewModel.APIViewModel
+
 
 @Composable
-fun ListScreen() {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        items(getGhibliList()) {
-            GhibliItem(ghibli = it)
+fun ListScreen(navController: NavController, apiViewModel: APIViewModel) {
+    val showLoading: Boolean by apiViewModel.loading.observeAsState(true)
+    // val characters: List<DataItem> by apiViewModel.characters.observeAsState(DataItem("12312", "21312", "12", "123", "123"))
+    apiViewModel.getCharacters()
+    if (showLoading) {
+        CircularProgressIndicator(
+            modifier = Modifier.width(64.dp),
+            color = MaterialTheme.colorScheme.secondary
+        )
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .fillMaxHeight(1f)
+        ) {
+            /* LazyColumn(
+                modifier = Modifier.fillMaxHeight(0.9f),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                items(characters) { ghibli ->
+                    GhibliItem(ghibli = ghibli)
+                }
+            }*/
+            Row(
+                Modifier
+                    .fillMaxWidth()
+            )
+            {
+                Text(text = "Favs")
+                Text(text = "All")
+            }
         }
     }
 }
+
+/*
+Hardcoded:
 
 fun getGhibliList(): List<GhibliFilm> {
     return listOf(
@@ -39,24 +69,30 @@ fun getGhibliList(): List<GhibliFilm> {
         GhibliFilm("GHI007", "El viento se levanta", R.drawable.viento_levanta, "23/01/21"),
         GhibliFilm("GHI008", "El recuerdo de Marnie", R.drawable.recuerdo_marnie, "23/07/19"),
         GhibliFilm("GHI009", "Ponyo en el acantilado", R.drawable.ponyo, "24/03/02"),
-        GhibliFilm("GHI010", "El cuento de la princesa Kaguya", R.drawable.princesa_kaguya, "24/11/08")
+        GhibliFilm(
+           "GHI010",
+            "El cuento de la princesa Kaguya",
+            R.drawable.princesa_kaguya,
+            "24/11/08"
+        )
     )
-}
+}*/
 
 @Composable
-fun GhibliItem(ghibli: GhibliFilm) {
+fun GhibliItem(ghibli: DataItem) {
     Card(border = BorderStroke(2.dp, Color.LightGray), modifier = Modifier.fillMaxWidth()) {
         Row {
-            Image(
+            /* Image(
                 painter = painterResource(id = ghibli.image),
                 contentDescription = ghibli.title,
                 modifier = Modifier
                     .fillMaxHeight()
                     .fillMaxWidth(0.4f)
             )
+             */
             Column {
-                Text(text = ghibli.title)
-                Text(text = ghibli.releaseDate)
+                Text(text = ghibli.director)
+                Text(text = ghibli.description)
             }
         }
     }
