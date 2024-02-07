@@ -10,26 +10,31 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class APIViewModel: ViewModel() {
+class APIViewModel : ViewModel() {
     private val repository = Repository()
-    private val _loading = MutableLiveData(true)
+    private val _loading = MutableLiveData<Boolean>()
     val loading = _loading
-    private val _characters = MutableLiveData<DataItem>()
-    val characters = _characters
+    private val _films = MutableLiveData<List<DataItem>>()
+    val films = _films
+    private val _searchText = MutableLiveData<String>()
+    val searchText: MutableLiveData<String> = _searchText
 
-    fun getCharacters(){
+    fun getCharacters() {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getAllCharacters()
             withContext(Dispatchers.Main) {
-                if(response.isSuccessful){
-                    _characters.value = response.body()
+                if (response.isSuccessful) {
+                    _films.value = response.body()
                     _loading.value = false
-                }
-                else{
+                } else {
                     Log.e("Error :", response.message())
                 }
             }
         }
     }
 
+    fun onSearchTextChange(text: String) {
+        // Actualizar el valor del texto de búsqueda cuando cambie
+        _searchText.value = text
+    }
 }
