@@ -31,15 +31,11 @@ class MainActivity : ComponentActivity() {
                 navController = navigationController,
                 startDestination = Routes.ListScreen.route
             ){
-                composable(Routes.ListScreen.route){ ListScreen(navigationController, apiViewModel, listScreenViewModel)}
-                composable(Routes.DetailScreen.route){ DetailScreen(navigationController, listScreenViewModel) }
-            }
-            APIListSergiHerradorTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
+                composable(Routes.ListScreen.route){
                     ListScreen(navigationController, apiViewModel, listScreenViewModel)
+                }
+                composable(Routes.DetailScreen.route){
+                    DetailScreen(navigationController, listScreenViewModel)
                 }
             }
         }
