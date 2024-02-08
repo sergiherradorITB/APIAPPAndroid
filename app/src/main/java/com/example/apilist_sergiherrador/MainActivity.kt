@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.apilist_sergiherrador.View.ListScreen
 import com.example.apilist_sergiherrador.View.*
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
+import com.example.apilist_sergiherrador.ViewModel.ListScreenViewModel
 import com.example.apilist_sergiherrador.ui.theme.APIListSergiHerradorTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,18 +26,20 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navigationController = rememberNavController()
             val apiViewModel by viewModels<APIViewModel>()
+            val listScreenViewModel by viewModels<ListScreenViewModel>()
             NavHost(
                 navController = navigationController,
                 startDestination = Routes.ListScreen.route
             ){
-                composable(Routes.ListScreen.route){ ListScreen(navigationController, apiViewModel)}
+                composable(Routes.ListScreen.route){ ListScreen(navigationController, apiViewModel, listScreenViewModel)}
+                composable(Routes.DetailScreen.route){ DetailScreen(navigationController, listScreenViewModel) }
             }
             APIListSergiHerradorTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ListScreen(navigationController, apiViewModel)
+                    ListScreen(navigationController, apiViewModel, listScreenViewModel)
                 }
             }
         }

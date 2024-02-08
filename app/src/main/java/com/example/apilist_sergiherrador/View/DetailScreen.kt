@@ -17,11 +17,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.apilist_sergiherrador.Model.DataItem
 import com.example.apilist_sergiherrador.R
+import com.example.apilist_sergiherrador.ViewModel.ListScreenViewModel
 
 @Composable
-fun DetailScreen(ghibli: DataItem) {
+fun DetailScreen(navController: NavController, listScreenViewModel: ListScreenViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,14 +42,14 @@ fun DetailScreen(ghibli: DataItem) {
 
         // Título grande
         Text(
-            text = ghibli.title,
+            text = listScreenViewModel.ghibli.title,
             modifier = Modifier.fillMaxWidth(),
         )
 
 
         // Descripción
         Text(
-            text = ghibli.description,
+            text = listScreenViewModel.ghibli.description,
             modifier = Modifier.fillMaxWidth(),
             maxLines = 5,
             overflow = TextOverflow.Ellipsis

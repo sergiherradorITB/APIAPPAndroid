@@ -21,11 +21,12 @@ import androidx.navigation.NavController
 import com.example.apilist_sergiherrador.Model.DataItem
 import com.example.apilist_sergiherrador.Routes
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
+import com.example.apilist_sergiherrador.ViewModel.ListScreenViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListScreen(navController: NavController, apiViewModel: APIViewModel) {
+fun ListScreen(navigationController: NavController, apiViewModel: APIViewModel, listScreenViewModel: ListScreenViewModel) {
     val showLoading: Boolean by apiViewModel.loading.observeAsState(true)
     val characters: List<DataItem> by apiViewModel.films.observeAsState(emptyList<DataItem>())
     val searchText: String by apiViewModel.searchText.observeAsState("")
@@ -59,7 +60,7 @@ fun ListScreen(navController: NavController, apiViewModel: APIViewModel) {
                     ghibli.title.contains(searchText) || ghibli.original_title.contains(searchText)
                 }
                 items(filteredCharacters) { ghibli ->
-                    GhibliItem(ghibli = ghibli, navController = navController)
+                    GhibliItem(ghibli = ghibli, navController = navigationController, listScreenViewModel)
                 }
             }
             Row(
@@ -70,18 +71,23 @@ fun ListScreen(navController: NavController, apiViewModel: APIViewModel) {
                 Text(text = "Favs")
                 Text(text = "All")
             }
+            Button(onClick = {                 navigationController.navigate(Routes.DetailScreen.route)
+            }) {
+            Text(text = "PERU")
+            }
         }
     }
 }
 
 @Composable
-fun GhibliItem(ghibli: DataItem, navController: NavController) {
+fun GhibliItem(ghibli: DataItem, navController: NavController, listScreenViewModel: ListScreenViewModel) {
     Card(border = BorderStroke(2.dp, Color.LightGray), modifier = Modifier.fillMaxWidth()) {
         Column {
             Text(text = ghibli.title)
             Text(text = ghibli.original_title)
             Button(onClick = {
-                navController.navigate(Routes.DetailScreen.createRoute(ghibli))
+                listScreenViewModel.modificarGhibli(ghibli)
+                navController.navigate(Routes.DetailScreen.route)
             }) {
                 Text(text = "Ver detalles")
             }
