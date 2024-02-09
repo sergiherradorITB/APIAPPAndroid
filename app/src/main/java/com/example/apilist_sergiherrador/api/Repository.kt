@@ -4,5 +4,6 @@ class Repository {
 
     private val apiInterface = APIInterface.create()
 
-    suspend fun getAllCharacters() = apiInterface.getCharacters()
+    suspend fun getAllPeople() = apiInterface.getPeople()
+    suspend fun getAllFilms() = apiInterface.getFilms()
 }

@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
@@ -44,6 +43,7 @@ import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.apilist_sergiherrador.Model.DataItem
+import com.example.apilist_sergiherrador.Model.PersonaItem
 import com.example.apilist_sergiherrador.R
 import com.example.apilist_sergiherrador.Routes
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
@@ -52,15 +52,15 @@ import com.example.apilist_sergiherrador.ViewModel.ListScreenViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListScreen(
+fun CharScreen(
     navigationController: NavController,
     apiViewModel: APIViewModel,
     listScreenViewModel: ListScreenViewModel
 ) {
     val showLoading: Boolean by apiViewModel.loading.observeAsState(true)
-    val characters: List<DataItem> by apiViewModel.films.observeAsState(emptyList<DataItem>())
+    val characters: List<PersonaItem> by apiViewModel.people.observeAsState(emptyList<PersonaItem>())
     val searchText: String by apiViewModel.searchText.observeAsState("")
-    apiViewModel.getFilms()
+    apiViewModel.getPeople()
     if (showLoading) {
         CircularProgressIndicator(
             modifier = Modifier.width(64.dp),
@@ -96,125 +96,39 @@ fun ListScreen(
                         .fillMaxHeight(0.9f),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    val filteredCharacters = characters.filter { ghibli ->
-                        ghibli.title.contains(searchText) || ghibli.original_title.contains(
-                            searchText
-                        )
+                    val filteredCharacters = characters.filter { persona ->
+                        persona.name.contains(searchText)
                     }
-                    items(filteredCharacters) { ghibli ->
-                        GhibliItem(
-                            ghibli = ghibli,
+                    items(filteredCharacters) { persona ->
+                        personaItem(
+                            persona = persona,
                             navController = navigationController,
                             listScreenViewModel
                         )
                     }
                 }
-                Bottom(navigationController, listScreenViewModel)
+                Bottom(navigationController = navigationController, listScreenViewModel = listScreenViewModel)
             }
         }
     }
 }
 
-
-@Composable
-fun Bottom(navigationController: NavController, listScreenViewModel:ListScreenViewModel){
-    Row(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Button(
-            onClick = {
-                navigationController.navigate(Routes.DetailScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Colores.Lila.color // Set the text/icon color of the button
-            ), enabled = listScreenViewModel.pillarGhibli().title != ""
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Back",
-                tint = Color.White
-            )
-        }
-        Button(
-            onClick = {
-                navigationController.navigate(Routes.DetailScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Colores.Lila.color // Set the text/icon color of the button
-            )
-        ) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Favorite",
-                tint = Color.White
-            )
-        }
-        Button(
-            onClick = {
-                navigationController.navigate(Routes.ListScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Colores.Lila.color // Set the text/icon color of the button
-            )
-
-        ) {
-            Icon(
-                imageVector = Icons.Default.List,
-                contentDescription = "List",
-                tint = Color.White
-            )
-        }
-        Button(
-            onClick = {
-                navigationController.navigate(Routes.CharScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Colores.Lila.color // Set the text/icon color of the button
-            )
-
-        ) {
-            Icon(
-                imageVector = Icons.Default.Face,
-                contentDescription = "List",
-                tint = Color.White
-            )
-        }
-    }
-}
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun GhibliItem(
-    ghibli: DataItem,
+fun personaItem(
+    persona: PersonaItem,
     navController: NavController,
     listScreenViewModel: ListScreenViewModel
 ) {
     Card(border = BorderStroke(2.dp, Color.LightGray), modifier = Modifier.fillMaxWidth()) {
         Column {
             Row {
-                // Imagen arriba
-                GlideImage(
-                    model = ghibli.image,
-                    contentDescription = "Character Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(100.dp)
-                )
                 Column(
                     modifier = Modifier.fillMaxSize(),
-                    // verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = ghibli.title)
-                    Text(text = ghibli.original_title)
-
-                    Button(onClick = {
-                        listScreenViewModel.modificarGhibli(ghibli)
-                        navController.navigate(Routes.DetailScreen.route)
-                    }) {
-                        Text(text = "Ver detalles")
-                    }
+                    Text(text = persona.name)
+                    Text(text = persona.age)
                 }
             }
         }

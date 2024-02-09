@@ -35,7 +35,10 @@ class MainActivity : ComponentActivity() {
                     ListScreen(navigationController, apiViewModel, listScreenViewModel)
                 }
                 composable(Routes.DetailScreen.route){
-                    DetailScreen(navigationController, listScreenViewModel)
+                    DetailScreen(navigationController, listScreenViewModel, apiViewModel)
+                }
+                composable(Routes.CharScreen.route){
+                    CharScreen(navigationController, apiViewModel, listScreenViewModel)
                 }
             }
         }

@@ -7,8 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.apilist_sergiherrador.Model.DataItem
 
 class ListScreenViewModel : ViewModel() {
-    var ghibli: DataItem by mutableStateOf(DataItem("", "", "", "", listOf(), "", "", "", listOf(), "", "", "", "", listOf(), "", "", listOf()))
-        private set
+    private var ghibli: DataItem by mutableStateOf(DataItem("", "", "", "", listOf(), "", "", "", listOf(), "", "", "", "", listOf(), "", "", listOf()))
 
     fun pillarGhibli():DataItem{
         return ghibli
@@ -17,5 +16,6 @@ class ListScreenViewModel : ViewModel() {
     fun modificarGhibli(dataItem: DataItem){
         ghibli = dataItem
     }
+
 }
 
