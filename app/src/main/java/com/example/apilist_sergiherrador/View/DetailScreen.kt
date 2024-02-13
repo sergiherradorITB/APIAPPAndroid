@@ -56,8 +56,8 @@ fun DetailScreen(
         Column(
             modifier = Modifier
                 .weight(0.8f)
+                .padding(top = 18.dp, start = 10.dp, end = 10.dp)
                 .fillMaxWidth(),
-
         ) {
             Box(
                 modifier = Modifier
@@ -69,13 +69,12 @@ fun DetailScreen(
                     model = listScreenViewModel.pillarGhibli().image,
                     contentDescription = "Character Image",
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize().padding(bottom = 10.dp)
                 )
                 IconButton(
                     onClick = { /* TODO Lógica de añadir a favoritos */ },
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(16.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Favorite,
@@ -143,4 +142,3 @@ fun DetailScreen(
         )
     }
 }
-

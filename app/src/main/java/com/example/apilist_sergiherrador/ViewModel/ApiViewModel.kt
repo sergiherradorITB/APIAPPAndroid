@@ -51,7 +51,6 @@ class APIViewModel : ViewModel() {
     }
 
     fun onSearchTextChange(text: String) {
-        // Actualizar el valor del texto de búsqueda cuando cambie
         _searchText.value = text
     }
 }

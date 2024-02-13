@@ -70,7 +70,6 @@ fun ListScreen(
     val characters: List<DataItem> by apiViewModel.films.observeAsState(emptyList<DataItem>())
     val searchText: String by apiViewModel.searchText.observeAsState("")
     val searchStatus: Boolean by listScreenViewModel.status.observeAsState(false)
-
     apiViewModel.getFilms()
 
     if (showLoading) {
@@ -112,23 +111,7 @@ fun ListScreen(
                         .background(Colores.Purpura.color)
                 ) {
                     if (searchStatus) {
-                        TextField(
-                            trailingIcon = {
-                                Icon(
-                                    imageVector = Icons.Default.Search,
-                                    contentDescription = "Search",
-                                    tint = Color.Gray
-                                )
-                            },
-                            value = searchText,
-                            onValueChange = { apiViewModel.onSearchTextChange(it.lowercase()) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 16.dp, bottom = 5.dp),
-                            label = {
-                                Text(text = "Search")
-                            }
-                        )
+                        busqueda(searchText, apiViewModel)
                     }
                     LazyColumn(
                         modifier = Modifier
@@ -137,7 +120,8 @@ fun ListScreen(
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         val filteredCharacters = characters.filter { ghibli ->
-                            ghibli.title.lowercase().contains(searchText) || ghibli.original_title.contains(
+                            ghibli.title.lowercase()
+                                .contains(searchText) || ghibli.original_title.contains(
                                 searchText
                             )
                         }
@@ -155,6 +139,7 @@ fun ListScreen(
         }
     }
 }
+
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
