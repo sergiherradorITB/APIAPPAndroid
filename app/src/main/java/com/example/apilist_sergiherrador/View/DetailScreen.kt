@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,8 +29,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -49,74 +52,95 @@ fun DetailScreen(
 ) {
     val characters: List<PersonaItem> by apiViewModel.people.observeAsState(emptyList<PersonaItem>())
     apiViewModel.getPeople()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        // verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Column(modifier = Modifier.fillMaxSize()) {
         Column(
-            horizontalAlignment = Alignment.End,
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.1f)
+                .weight(0.8f)
+                .fillMaxWidth(),
+
         ) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Favorite",
-                tint = Colores.AmarilloTenue.color,
+            Box(
                 modifier = Modifier
-                    .clickable { }
-                    .fillMaxHeight()
-                    .fillMaxWidth(0.3f)
-            )
-        }
-        // Imagen arriba
-        GlideImage(
-            model = listScreenViewModel.pillarGhibli().image,
-            contentDescription = "Character Image",
-            contentScale = ContentScale.Fit,
-            modifier = Modifier
-                .fillMaxWidth(1f)
-                .fillMaxHeight(0.4f)
-        )
-
-        // Título grande
-        Text(
-            text = listScreenViewModel.pillarGhibli().title,
-            modifier = Modifier.fillMaxWidth(),
-        )
-
-        // Descripción
-        Text(
-            text = listScreenViewModel.pillarGhibli().description,
-            modifier = Modifier.fillMaxWidth(),
-            maxLines = 5,
-            overflow = TextOverflow.Ellipsis
-        )
-
-        Button(onClick = {
-            navController.navigate(Routes.ListScreen.route)
-        }) {
-            Text(text = "Volver al menú")
-        }
-        // Mostrar detalles de personajes en un LazyColumn
-        Text(text = if (listScreenViewModel.pillarGhibli().people[0] == "https://ghibliapi.vercel.app/people/") "No personatges trobat a la API" else "Pesonatges: ")
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        ) {
-            val filteredCharacters = characters.filter { character ->
-                val moviePeopleUrls = listScreenViewModel.pillarGhibli().people
-                moviePeopleUrls.any { it.contains(character.id) }
+                    .weight(0.4f)
+                    .fillMaxWidth()
+            ) {
+                // Imagen arriba
+                GlideImage(
+                    model = listScreenViewModel.pillarGhibli().image,
+                    contentDescription = "Character Image",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.fillMaxSize()
+                )
+                IconButton(
+                    onClick = { /* TODO Lógica de añadir a favoritos */ },
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(16.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = "Añadir a favoritos"
+                    )
+                }
             }
+            Column(
+                modifier = Modifier
+                    .weight(0.6f)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                // Título grande
+                Text(
+                    text = listScreenViewModel.pillarGhibli().title,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    fontSize = 33.sp
+                )
 
-            items(filteredCharacters) { character ->
-                personaItem(character, navController, listScreenViewModel)
+                // Descripción
+                Text(
+                    text = listScreenViewModel.pillarGhibli().description,
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 5,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Button(onClick = {
+                    navController.navigate(Routes.ListScreen.route)
+                }) {
+                    Text(text = "Volver al menú")
+                }
+                // Mostrar detalles de personajes en un LazyColumn
+                Text(
+                    text = if (listScreenViewModel.pillarGhibli().people[0] == "https://ghibliapi.vercel.app/people/")
+                        "No personatges trobat a la API"
+                    else
+                        "Pesonatges: ",
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                ) {
+                    val filteredCharacters = characters.filter { character ->
+                        val moviePeopleUrls = listScreenViewModel.pillarGhibli().people
+                        moviePeopleUrls.any { it.contains(character.id) }
+                    }
+
+                    items(filteredCharacters) { character ->
+                        personaItem(character, navController, listScreenViewModel)
+                    }
+                }
             }
         }
-
+        MyBottomBar(
+            navController = navController,
+            listScreenViewModel = listScreenViewModel
+        )
     }
 }
+

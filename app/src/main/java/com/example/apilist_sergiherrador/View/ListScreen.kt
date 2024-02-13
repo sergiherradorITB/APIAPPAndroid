@@ -1,6 +1,7 @@
 package com.example.apilist_sergiherrador.View
 
 import Colores
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,18 +17,25 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -50,6 +58,7 @@ import com.example.apilist_sergiherrador.ViewModel.APIViewModel
 import com.example.apilist_sergiherrador.ViewModel.ListScreenViewModel
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListScreen(
@@ -60,7 +69,10 @@ fun ListScreen(
     val showLoading: Boolean by apiViewModel.loading.observeAsState(true)
     val characters: List<DataItem> by apiViewModel.films.observeAsState(emptyList<DataItem>())
     val searchText: String by apiViewModel.searchText.observeAsState("")
+    val searchStatus: Boolean by listScreenViewModel.status.observeAsState(false)
+
     apiViewModel.getFilms()
+
     if (showLoading) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -73,120 +85,73 @@ fun ListScreen(
             )
         }
     } else {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(1f)
-                    .fillMaxHeight(1f)
-                    .background(Colores.Purpura.color)
-            ) {
-                TextField(
-                    trailingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "Search",
-                            tint = Color.Gray
-                        )
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(text = "SerGhibli")
                     },
-                    value = searchText,
-                    onValueChange = { apiViewModel.onSearchTextChange(it) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp, bottom = 5.dp),
-                    label = {
-                        Text(text = "Search")
+                    navigationIcon = {
+                        IconButton(onClick = { listScreenViewModel.setStatus(!searchStatus) }) {
+                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = { listScreenViewModel.setStatus(!searchStatus) }) {
+                            Icon(Icons.Default.Search, contentDescription = "Search")
+                        }
                     }
                 )
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxHeight(0.9f),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    val filteredCharacters = characters.filter { ghibli ->
-                        ghibli.title.contains(searchText) || ghibli.original_title.contains(
-                            searchText
-                        )
-                    }
-                    items(filteredCharacters) {
-                        GhibliItem(
-                            ghibli = it,
-                            navController = navigationController,
-                            listScreenViewModel
-                        )
-                    }
-                }
-                Bottom(navigationController, listScreenViewModel)
             }
-        }
-    }
-}
-
-
-@Composable
-fun Bottom(navigationController: NavController, listScreenViewModel: ListScreenViewModel) {
-    Row(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Button(
-            onClick = {
-                navigationController.navigate(Routes.DetailScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Colores.Lila.color // Set the text/icon color of the button
-            ), enabled = listScreenViewModel.pillarGhibli().title != ""
         ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Back",
-                tint = Color.White
-            )
-        }
-        Button(
-            onClick = {
-                navigationController.navigate(Routes.DetailScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Colores.Lila.color // Set the text/icon color of the button
-            )
-        ) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Favorite",
-                tint = Color.White
-            )
-        }
-        Button(
-            onClick = {
-                navigationController.navigate(Routes.ListScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Colores.Lila.color // Set the text/icon color of the button
-            )
-
-        ) {
-            Icon(
-                imageVector = Icons.Default.List,
-                contentDescription = "List",
-                tint = Color.White
-            )
-        }
-        Button(
-            onClick = {
-                navigationController.navigate(Routes.CharScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Colores.Lila.color // Set the text/icon color of the button
-            )
-
-        ) {
-            Icon(
-                imageVector = Icons.Default.Face,
-                contentDescription = "List",
-                tint = Color.White
-            )
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .background(Colores.Purpura.color)
+                ) {
+                    if (searchStatus) {
+                        TextField(
+                            trailingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = "Search",
+                                    tint = Color.Gray
+                                )
+                            },
+                            value = searchText,
+                            onValueChange = { apiViewModel.onSearchTextChange(it.lowercase()) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 16.dp, bottom = 5.dp),
+                            label = {
+                                Text(text = "Search")
+                            }
+                        )
+                    }
+                    LazyColumn(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        val filteredCharacters = characters.filter { ghibli ->
+                            ghibli.title.lowercase().contains(searchText) || ghibli.original_title.contains(
+                                searchText
+                            )
+                        }
+                        items(filteredCharacters) {
+                            GhibliItem(
+                                ghibli = it,
+                                navController = navigationController,
+                                listScreenViewModel
+                            )
+                        }
+                    }
+                    MyBottomBar(navigationController, listScreenViewModel)
+                }
+            }
         }
     }
 }

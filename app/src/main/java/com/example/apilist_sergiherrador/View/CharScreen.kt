@@ -107,7 +107,7 @@ fun CharScreen(
                         )
                     }
                 }
-                Bottom(navigationController = navigationController, listScreenViewModel = listScreenViewModel)
+                MyBottomBar(navigationController, listScreenViewModel)
             }
         }
     }
