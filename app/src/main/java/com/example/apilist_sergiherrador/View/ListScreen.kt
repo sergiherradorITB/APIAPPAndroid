@@ -62,10 +62,16 @@ fun ListScreen(
     val searchText: String by apiViewModel.searchText.observeAsState("")
     apiViewModel.getFilms()
     if (showLoading) {
-        CircularProgressIndicator(
-            modifier = Modifier.width(64.dp),
-            color = MaterialTheme.colorScheme.secondary
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.width(64.dp),
+                color = MaterialTheme.colorScheme.secondary
+            )
+        }
     } else {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -101,9 +107,9 @@ fun ListScreen(
                             searchText
                         )
                     }
-                    items(filteredCharacters) { ghibli ->
+                    items(filteredCharacters) {
                         GhibliItem(
-                            ghibli = ghibli,
+                            ghibli = it,
                             navController = navigationController,
                             listScreenViewModel
                         )
@@ -117,7 +123,7 @@ fun ListScreen(
 
 
 @Composable
-fun Bottom(navigationController: NavController, listScreenViewModel:ListScreenViewModel){
+fun Bottom(navigationController: NavController, listScreenViewModel: ListScreenViewModel) {
     Row(
         modifier = Modifier
             .fillMaxSize(),
@@ -184,6 +190,7 @@ fun Bottom(navigationController: NavController, listScreenViewModel:ListScreenVi
         }
     }
 }
+
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun GhibliItem(

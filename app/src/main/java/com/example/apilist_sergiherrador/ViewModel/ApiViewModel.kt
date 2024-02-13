@@ -18,7 +18,7 @@ class APIViewModel : ViewModel() {
     private val _films = MutableLiveData<List<DataItem>>()
     val films = _films
     private val _people = MutableLiveData<List<PersonaItem>>() // LiveData para almacenar personas
-    val people = _people // Acceso público a LiveData de personas
+    val people = _people
     private val _searchText = MutableLiveData<String>()
     val searchText: MutableLiveData<String> = _searchText
 

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
@@ -55,14 +56,22 @@ fun DetailScreen(
         // verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(horizontalAlignment = Alignment.End, modifier = Modifier.fillMaxWidth().fillMaxHeight(0.1f)){
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = "Favorite",
-                    tint = Colores.AmarilloTenue.color,
-                    modifier = Modifier.clickable {  }.fillMaxHeight(). fillMaxWidth(0.3f)
-                )
-            }
+        Column(
+            horizontalAlignment = Alignment.End,
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.1f)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Favorite,
+                contentDescription = "Favorite",
+                tint = Colores.AmarilloTenue.color,
+                modifier = Modifier
+                    .clickable { }
+                    .fillMaxHeight()
+                    .fillMaxWidth(0.3f)
+            )
+        }
         // Imagen arriba
         GlideImage(
             model = listScreenViewModel.pillarGhibli().image,
@@ -99,13 +108,15 @@ fun DetailScreen(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
         ) {
-            items(characters.size) { index ->
-                val character = characters[index]
+            val filteredCharacters = characters.filter { character ->
                 val moviePeopleUrls = listScreenViewModel.pillarGhibli().people
-                if (moviePeopleUrls.any { it.contains(character.id) }) {
-                    personaItem(character, navController, listScreenViewModel)
-                }
+                moviePeopleUrls.any { it.contains(character.id) }
+            }
+
+            items(filteredCharacters) { character ->
+                personaItem(character, navController, listScreenViewModel)
             }
         }
+
     }
 }
