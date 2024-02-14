@@ -1,6 +1,5 @@
 package com.example.apilist_sergiherrador.View
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
@@ -10,17 +9,15 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.example.apilist_sergiherrador.Routes
-import com.example.apilist_sergiherrador.ViewModel.ListScreenViewModel
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
 
 @Composable
 fun MyBottomBar(
     navController: NavController,
-    listScreenViewModel: ListScreenViewModel
+    listScreenViewModel: ListDetailScreenViewModel
 ) {
     BottomNavigation(
         backgroundColor = Colores.Purpura.color,

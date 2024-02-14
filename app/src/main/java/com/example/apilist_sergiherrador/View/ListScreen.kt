@@ -3,8 +3,8 @@ package com.example.apilist_sergiherrador.View
 import Colores
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,20 +17,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,7 +30,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -46,16 +37,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.apilist_sergiherrador.Model.DataItem
-import com.example.apilist_sergiherrador.R
+import com.example.apilist_sergiherrador.Model.AllFilms
 import com.example.apilist_sergiherrador.Routes
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
-import com.example.apilist_sergiherrador.ViewModel.ListScreenViewModel
+import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -64,10 +53,10 @@ import com.example.apilist_sergiherrador.ViewModel.ListScreenViewModel
 fun ListScreen(
     navigationController: NavController,
     apiViewModel: APIViewModel,
-    listScreenViewModel: ListScreenViewModel
+    listScreenViewModel: ListDetailScreenViewModel
 ) {
     val showLoading: Boolean by apiViewModel.loading.observeAsState(true)
-    val characters: List<DataItem> by apiViewModel.films.observeAsState(emptyList<DataItem>())
+    val characters: List<AllFilms> by apiViewModel.films.observeAsState(emptyList<AllFilms>())
     val searchText: String by apiViewModel.searchText.observeAsState("")
     val searchStatus: Boolean by listScreenViewModel.status.observeAsState(false)
     apiViewModel.getFilms()
@@ -144,14 +133,13 @@ fun ListScreen(
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun GhibliItem(
-    ghibli: DataItem,
+    ghibli: AllFilms,
     navController: NavController,
-    listScreenViewModel: ListScreenViewModel
+    listScreenViewModel: ListDetailScreenViewModel
 ) {
     Card(border = BorderStroke(2.dp, Color.LightGray), modifier = Modifier.fillMaxWidth()) {
-        Column {
+        Column() {
             Row {
-                // Imagen arriba
                 GlideImage(
                     model = ghibli.image,
                     contentDescription = "Character Image",
@@ -160,16 +148,17 @@ fun GhibliItem(
                 )
                 Column(
                     modifier = Modifier.fillMaxSize(),
-                    // verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
                 ) {
                     Text(text = ghibli.title)
                     Text(text = ghibli.original_title)
 
-                    Button(onClick = {
-                        listScreenViewModel.modificarGhibli(ghibli)
-                        navController.navigate(Routes.DetailScreen.route)
-                    }) {
+                    Button(modifier = Modifier.padding(top = 2.dp),
+                        onClick = {
+                            listScreenViewModel.modificarGhibli(ghibli)
+                            navController.navigate(Routes.DetailScreen.route)
+                        }) {
                         Text(text = "Ver detalles")
                     }
                 }

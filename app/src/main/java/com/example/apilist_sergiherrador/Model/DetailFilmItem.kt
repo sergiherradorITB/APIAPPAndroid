@@ -1,6 +1,6 @@
 package com.example.apilist_sergiherrador.Model
 
-data class DataItem(
+data class DetailFilmItem(
     val description: String,
     val director: String,
     val id: String,

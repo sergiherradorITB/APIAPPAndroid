@@ -6,16 +6,26 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.apilist_sergiherrador.Model.DataItem
+import com.example.apilist_sergiherrador.Model.AllFilms
 
-class ListScreenViewModel : ViewModel() {
-    private var ghibli: DataItem by mutableStateOf(DataItem("", "", "", "", listOf(), "", "", "", listOf(), "", "", "", "", listOf(), "", "", listOf()))
+class ListDetailScreenViewModel : ViewModel() {
+    private var ghibli: AllFilms by mutableStateOf(AllFilms("", "", "", "", "", "", ""))
 
-    fun pillarGhibli():DataItem{
+    private var show by mutableStateOf(false)
+
+    fun pillarShow():Boolean{
+        return show
+    }
+
+    fun modificarShow(valor:Boolean){
+        show = valor
+    }
+
+    fun pillarGhibli():AllFilms{
         return ghibli
     }
 
-    fun modificarGhibli(dataItem: DataItem){
+    fun modificarGhibli(dataItem: AllFilms){
         ghibli = dataItem
     }
     private val _status: MutableLiveData<Boolean> = MutableLiveData(false)
