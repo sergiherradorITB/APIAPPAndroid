@@ -8,11 +8,21 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.apilist_sergiherrador.Model.BottomNavigationScreens
 import com.example.apilist_sergiherrador.Routes
 import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
+
+val bottomNavigationItems = listOf<BottomNavigationScreens>(
+    BottomNavigationScreens.Home,
+    BottomNavigationScreens.Favorite,
+    BottomNavigationScreens.CharScreen
+)
 
 @Composable
 fun MyBottomBar(
@@ -23,51 +33,24 @@ fun MyBottomBar(
         backgroundColor = Colores.Purpura.color,
         contentColor = Color.White,
     ) {
-        BottomNavigationItem(
-            icon = { Icon(Icons.Filled.ArrowBack, contentDescription = "Back") },
-            // label = { Text("Back") },
-            // selected = listScreenViewModel.pillarGhibli().title == "",
-            // No me va lo de selected lol lselected = false,
-            selected = false,
-            enabled = listScreenViewModel.pillarGhibli().title != "",
-            onClick = { navController.navigate(Routes.DetailScreen.route) }
-        )
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = "Favorite",
-                    tint = Color.White
-                )
-            },
-            // label = { Text("Favorite") },
-            selected = false,
-            onClick = { /*TODO*/ }
-        )
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.List,
-                    contentDescription = "List",
-                    tint = Color.White
-                )
-            },
-            // label = { Text("Lista Pelis") },
-            selected = false,
-            onClick = { navController.navigate(Routes.ListScreen.route) }
-        )
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Face,
-                    contentDescription = "List",
-                    tint = Color.White
-                )
-            },
-            // label = { Text("Lista Personajes") },
-            selected = true,
-            onClick = { navController.navigate(Routes.CharScreen.route) }
-        )
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+        bottomNavigationItems.forEach { item ->
+            BottomNavigationItem(
+                icon = { Icon(item.icon, contentDescription = item.label, tint = if (currentRoute == item.route) Color.White else Color.Black) },
+                label = { Text(item.label, color = if (currentRoute == item.route) Color.White else Color.Black) },
+                selected = currentRoute == item.route,
+                selectedContentColor = Color.White,
+                unselectedContentColor = Color.Black,
+                alwaysShowLabel = false,
+                onClick = {
+                    if (currentRoute != item.route) {
+                        navController.navigate(item.route)
+                    }
+                }
+
+            )
+        }
     }
 }
 

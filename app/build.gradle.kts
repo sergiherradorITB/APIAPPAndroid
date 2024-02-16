@@ -79,4 +79,6 @@ dependencies {
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
     // BottomNavigation
     implementation("androidx.compose.material:material:1.6.1")
+    // ROOM
+
 }

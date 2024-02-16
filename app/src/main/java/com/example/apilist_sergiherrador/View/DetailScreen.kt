@@ -1,6 +1,8 @@
 package com.example.apilist_sergiherrador.View
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -107,8 +109,7 @@ fun DetailScreen(
                         Icon(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .align(Alignment.End)
-                            ,
+                                .align(Alignment.End),
                             imageVector = Icons.Default.Favorite,
                             tint = Colores.Lila.color,
                             contentDescription = "Añadir a favoritos"
@@ -189,6 +190,14 @@ fun DetailScreen(
                         .weight(1f)
                         .fillMaxWidth()
                         .padding(vertical = 8.dp)
+                        .border(
+                            border =
+                            if (moviePeopleUrls[0] == "https://ghibliapi.vercel.app/people/") {
+                                BorderStroke(0.dp, Color.Transparent)
+                            } else {
+                                BorderStroke(2.dp, Color.LightGray)
+                            }
+                        )
                 ) {
                     val filteredCharacters = characters.filter { character ->
                         moviePeopleUrls.any { it.contains(character.id) }
@@ -207,7 +216,6 @@ fun DetailScreen(
     }
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MyDialog(show: Boolean, onDismiss: () -> Unit, filmItem: DetailFilmItem) {
     if (show) {

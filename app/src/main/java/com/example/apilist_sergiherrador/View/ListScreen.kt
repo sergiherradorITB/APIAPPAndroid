@@ -23,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,11 +38,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.apilist_sergiherrador.Model.AllFilms
+import com.example.apilist_sergiherrador.Model.BottomNavigationScreens
 import com.example.apilist_sergiherrador.Routes
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
 import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
@@ -77,27 +82,52 @@ fun ListScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = "SerGhibli")
+                        Text(
+                            text = "SERGHI-BLI",
+                            textDecoration = TextDecoration.Underline,
+                            fontFamily = FontFamily.SansSerif,
+                            color = Color.White,
+                            fontSize = 20.sp
+                        )
                     },
                     navigationIcon = {
-                        IconButton(onClick = { listScreenViewModel.setStatus(!searchStatus) }) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        IconButton(
+                            onClick = {
+                                navigationController.navigate(Routes.DetailScreen.route)
+                            }, enabled = listScreenViewModel.pillarGhibli().title != ""
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = "Back",
+                                tint = if (listScreenViewModel.pillarGhibli().title != "") Color.White else Color.Black
+                            )
                         }
                     },
                     actions = {
                         IconButton(onClick = { listScreenViewModel.setStatus(!searchStatus) }) {
-                            Icon(Icons.Default.Search, contentDescription = "Search")
+                            Icon(
+                                Icons.Default.Search,
+                                contentDescription = "Search",
+                                tint = Color.White
+                            )
                         }
                     }
                 )
+            },
+            bottomBar = {
+                MyBottomBar(
+                    navController = navigationController,
+                    listScreenViewModel = listScreenViewModel
+                )
             }
-        ) {
+        ) { paddingValues ->
             Box(modifier = Modifier.fillMaxSize()) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
                         .background(Colores.Purpura.color)
+                        .padding(paddingValues)
                 ) {
                     if (searchStatus) {
                         busqueda(searchText, apiViewModel)
@@ -122,7 +152,6 @@ fun ListScreen(
                             )
                         }
                     }
-                    MyBottomBar(navigationController, listScreenViewModel)
                 }
             }
         }

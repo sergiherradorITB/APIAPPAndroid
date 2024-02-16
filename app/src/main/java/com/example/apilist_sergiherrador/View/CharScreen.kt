@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -32,10 +33,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.example.apilist_sergiherrador.Model.PersonaItem
+import com.example.apilist_sergiherrador.Routes
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
 import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
 
@@ -71,27 +76,52 @@ fun CharScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = "SerGhibli")
+                        Text(
+                            text = "SERGHI-BLI",
+                            textDecoration = TextDecoration.Underline,
+                            fontFamily = FontFamily.SansSerif,
+                            color = Color.White,
+                            fontSize = 20.sp
+                        )
                     },
                     navigationIcon = {
-                        IconButton(onClick = { listScreenViewModel.setStatus(!searchStatus) }) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        IconButton(
+                            onClick = {
+                                navigationController.navigate(Routes.DetailScreen.route)
+                            }, enabled = listScreenViewModel.pillarGhibli().title != ""
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = "Back",
+                                tint = if (listScreenViewModel.pillarGhibli().title != "") Color.White else Color.Black
+                            )
                         }
                     },
                     actions = {
                         IconButton(onClick = { listScreenViewModel.setStatus(!searchStatus) }) {
-                            Icon(Icons.Default.Search, contentDescription = "Search")
+                            Icon(
+                                Icons.Default.Search,
+                                contentDescription = "Search",
+                                tint = Color.White
+                            )
                         }
                     }
                 )
+            },
+            bottomBar = {
+                MyBottomBar(
+                    navController = navigationController,
+                    listScreenViewModel = listScreenViewModel
+                )
             }
-        ) {
+        ) { paddingValues ->
             Box(modifier = Modifier.fillMaxSize()) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
                         .background(Colores.Purpura.color)
+                        .padding(paddingValues)
                 ) {
                     if (searchStatus) {
                         busqueda(searchText, apiViewModel)
@@ -103,7 +133,7 @@ fun CharScreen(
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         val filteredCharacters = characters.filter { persona ->
-                            persona.name.contains(searchText)
+                            persona.name.lowercase().contains(searchText)
                         }
                         items(filteredCharacters) { persona ->
                             personaItem(
@@ -113,7 +143,6 @@ fun CharScreen(
                             )
                         }
                     }
-                    MyBottomBar(navigationController, listScreenViewModel)
                 }
             }
         }
