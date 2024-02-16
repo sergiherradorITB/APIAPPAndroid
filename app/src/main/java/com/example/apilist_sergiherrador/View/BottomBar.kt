@@ -21,7 +21,8 @@ import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
 val bottomNavigationItems = listOf<BottomNavigationScreens>(
     BottomNavigationScreens.Home,
     BottomNavigationScreens.Favorite,
-    BottomNavigationScreens.CharScreen
+    BottomNavigationScreens.CharScreen,
+    BottomNavigationScreens.Species
 )
 
 @Composable

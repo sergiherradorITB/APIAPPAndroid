@@ -32,6 +32,12 @@ class MainActivity : ComponentActivity() {
                 composable(Routes.CharScreen.route){
                     CharScreen(navigationController, apiViewModel, listScreenViewModel)
                 }
+                composable(Routes.Species.route){
+                    Species(navigationController, apiViewModel, listScreenViewModel)
+                }
+                composable(Routes.SpeciesDetail.route){
+                    SpeciesDetailScreen(navigationController,listScreenViewModel, apiViewModel)
+                }
             }
         }
     }

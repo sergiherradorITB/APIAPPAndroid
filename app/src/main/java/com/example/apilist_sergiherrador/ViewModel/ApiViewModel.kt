@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.example.apilist_sergiherrador.Model.AllFilms
 import com.example.apilist_sergiherrador.Model.DetailFilmItem
 import com.example.apilist_sergiherrador.Model.PersonaItem
+import com.example.apilist_sergiherrador.Model.Species
+import com.example.apilist_sergiherrador.Model.SpeciesItem
 import com.example.retrofitapp.api.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +32,16 @@ class APIViewModel : ViewModel() {
     val detailFilm = _detailFilm
     private val _loadingFilm = MutableLiveData<Boolean>()
     val loadingFilm = _loadingFilm
+
+    // Species
+    private val _species = MutableLiveData<Species>() // LiveData para almacenar personas
+    val species = _species
+    private val _loadingFilm2 = MutableLiveData<Boolean>()
+    val loadingFilm2 = _loadingFilm2
+
+    // Species
+    private val _speciesDetailed = MutableLiveData<SpeciesItem>() // LiveData para almacenar personas
+    val speciesItemDetailed = _speciesDetailed
 
     // Busqueda del text
     private val _searchText = MutableLiveData<String>()
@@ -76,6 +88,35 @@ class APIViewModel : ViewModel() {
             }
         }
     }
+
+    fun getSpecies() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getSpecies()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    _species.value = response.body()
+                    _loadingFilm2.value = false
+                } else {
+                    Log.e("Error :", response.message())
+                }
+            }
+        }
+    }
+
+    fun getSpeciesDetailed(id: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getSpeciesDetailed(id)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    _speciesDetailed.value = response.body()
+                    loading.value = false
+                } else {
+                    Log.e("Error :", response.message())
+                }
+            }
+        }
+    }
+
 
     fun onSearchTextChange(text: String) {
         _searchText.value = text
