@@ -5,6 +5,8 @@ import com.example.apilist_sergiherrador.Model.DetailFilmItem
 import com.example.apilist_sergiherrador.Model.PersonaItem
 import com.example.apilist_sergiherrador.Model.Species
 import com.example.apilist_sergiherrador.Model.SpeciesItem
+import com.example.apilist_sergiherrador.Model.Location
+import com.example.apilist_sergiherrador.Model.LocationItem
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -26,6 +28,12 @@ interface APIInterface {
 
     @GET("species/{id}")
     suspend fun getSpeciesDetailed(@Path("id") idSpecie: String): Response<SpeciesItem>
+
+    @GET("locations")
+    suspend fun getLocations(): Response<Location>
+
+    @GET("locations/{id}")
+    suspend fun getLocationsDetailed(@Path("id") idLocation: String): Response<LocationItem>
 
     companion object {
         val BASE_URL = "https://ghibliapi.vercel.app/"

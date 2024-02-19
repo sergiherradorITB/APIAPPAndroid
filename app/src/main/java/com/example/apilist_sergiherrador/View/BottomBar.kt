@@ -22,7 +22,8 @@ val bottomNavigationItems = listOf<BottomNavigationScreens>(
     BottomNavigationScreens.Home,
     BottomNavigationScreens.Favorite,
     BottomNavigationScreens.CharScreen,
-    BottomNavigationScreens.Species
+    BottomNavigationScreens.Species,
+    BottomNavigationScreens.Location
 )
 
 @Composable

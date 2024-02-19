@@ -38,6 +38,12 @@ class MainActivity : ComponentActivity() {
                 composable(Routes.SpeciesDetail.route){
                     SpeciesDetailScreen(navigationController,listScreenViewModel, apiViewModel)
                 }
+                composable(Routes.Location.route){
+                    Location(navigationController,apiViewModel,listScreenViewModel)
+                }
+                composable(Routes.LocationDetail.route){
+                    LocationDetailScreen(navigationController,listScreenViewModel,apiViewModel)
+                }
             }
         }
     }

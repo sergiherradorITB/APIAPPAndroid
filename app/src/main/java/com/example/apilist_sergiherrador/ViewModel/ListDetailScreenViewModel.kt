@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.apilist_sergiherrador.Model.AllFilms
+import com.example.apilist_sergiherrador.Model.LocationItem
 import com.example.apilist_sergiherrador.Model.SpeciesItem
 
 class ListDetailScreenViewModel : ViewModel() {
@@ -15,6 +16,9 @@ class ListDetailScreenViewModel : ViewModel() {
     private var show by mutableStateOf(false)
 
     private var specie:SpeciesItem by mutableStateOf(SpeciesItem("","", emptyList(), "", "","", emptyList(), ""))
+
+    private var location:LocationItem by mutableStateOf(LocationItem("", emptyList(),"","", emptyList(), "","",""))
+
 
     fun pillarShow():Boolean{
         return show
@@ -37,6 +41,13 @@ class ListDetailScreenViewModel : ViewModel() {
     }
     fun modificarSpecie(speciesItem: SpeciesItem){
         specie = speciesItem
+    }
+
+    fun pillarLocation():LocationItem{
+        return location
+    }
+    fun modificarLocation(locationItem: LocationItem){
+        location = locationItem
     }
 
     private val _status: MutableLiveData<Boolean> = MutableLiveData(false)

@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.apilist_sergiherrador.Model.AllFilms
 import com.example.apilist_sergiherrador.Model.DetailFilmItem
+import com.example.apilist_sergiherrador.Model.Location
+import com.example.apilist_sergiherrador.Model.LocationItem
 import com.example.apilist_sergiherrador.Model.PersonaItem
 import com.example.apilist_sergiherrador.Model.Species
 import com.example.apilist_sergiherrador.Model.SpeciesItem
@@ -39,14 +41,22 @@ class APIViewModel : ViewModel() {
     private val _loadingFilm2 = MutableLiveData<Boolean>()
     val loadingFilm2 = _loadingFilm2
 
-    // Species
     private val _speciesDetailed = MutableLiveData<SpeciesItem>() // LiveData para almacenar personas
     val speciesItemDetailed = _speciesDetailed
+
+    // Locations
+    private val _locations = MutableLiveData<Location>() // LiveData para almacenar personas
+    val locations = _locations
+
+    private val _locationsDetailed = MutableLiveData<LocationItem>() // LiveData para almacenar personas
+    val locationItemDetailed = _locationsDetailed
+
 
     // Busqueda del text
     private val _searchText = MutableLiveData<String>()
     val searchText: MutableLiveData<String> = _searchText
 
+    //Pelicules
     fun getFilms() {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getAllFilms()
@@ -61,19 +71,7 @@ class APIViewModel : ViewModel() {
         }
     }
 
-    fun getPeople() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.getAllPeople()
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    _people.value = response.body()
-                    _loading.value = false
-                } else {
-                    Log.e("Error :", response.message())
-                }
-            }
-        }
-    }
+
 
     fun getOneFilm(id:String) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -89,6 +87,22 @@ class APIViewModel : ViewModel() {
         }
     }
 
+    // Persones
+    fun getPeople() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getAllPeople()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    _people.value = response.body()
+                    _loading.value = false
+                } else {
+                    Log.e("Error :", response.message())
+                }
+            }
+        }
+    }
+
+    // Species
     fun getSpecies() {
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getSpecies()
@@ -117,6 +131,35 @@ class APIViewModel : ViewModel() {
         }
     }
 
+    // Locations
+
+    fun getLocation() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getLocation()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    _locations.value = response.body()
+                    _loadingFilm2.value = false
+                } else {
+                    Log.e("Error :", response.message())
+                }
+            }
+        }
+    }
+
+    fun getLocationDetailed(id: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getLocationDetailed(id)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    _locationsDetailed.value = response.body()
+                    loading.value = false
+                } else {
+                    Log.e("Error :", response.message())
+                }
+            }
+        }
+    }
 
     fun onSearchTextChange(text: String) {
         _searchText.value = text
