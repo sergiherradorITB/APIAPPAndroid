@@ -12,11 +12,9 @@ import com.example.apilist_sergiherrador.Model.LocationItem
 import com.example.apilist_sergiherrador.Model.SpeciesItem
 
 class ListDetailScreenViewModel : ViewModel() {
-    private var ghibli: AllFilms by mutableStateOf(AllFilms("", "", "", "", "", "", ""))
-
+    // private var ghibli: AllFilms by mutableStateOf(AllFilms("", "", "", "", "", "", ""))
     private var id:String by mutableStateOf("")
     private var show by mutableStateOf(false)
-
     private var specie: SpeciesItem by mutableStateOf(
         SpeciesItem(
             "",
@@ -58,9 +56,9 @@ class ListDetailScreenViewModel : ViewModel() {
         show = valor
     }
 
-    fun pillarGhibli(): AllFilms {
+    /*fun pillarGhibli(): AllFilms {
         return ghibli
-    }
+    }*/
     fun pillarGhibliId():String{
         return id
     }
@@ -68,9 +66,9 @@ class ListDetailScreenViewModel : ViewModel() {
         this.id = id
     }
 
-    fun modificarGhibli(dataItem: AllFilms) {
+    /*fun modificarGhibli(dataItem: AllFilms) {
         ghibli = dataItem
-    }
+    }*/
 
     fun modificarGhibliFavorite(dataItem: DetailFilmItem) {
         ghibliFavorite = dataItem

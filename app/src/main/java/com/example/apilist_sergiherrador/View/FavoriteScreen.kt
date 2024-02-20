@@ -65,12 +65,12 @@ fun FavoritesScreen(
                         IconButton(
                             onClick = {
                                 navigationController.navigate(Routes.DetailScreen.route)
-                            }, enabled = listScreenViewModel.pillarGhibli().title != ""
+                            }, enabled = listScreenViewModel.pillarGhibliId() != ""
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
                                 contentDescription = "Back",
-                                tint = if (listScreenViewModel.pillarGhibli().title != "") Color.White else Color.Black
+                                tint = if (listScreenViewModel.pillarGhibliId() != "") Color.White else Color.Black
                             )
                         }
                     },
