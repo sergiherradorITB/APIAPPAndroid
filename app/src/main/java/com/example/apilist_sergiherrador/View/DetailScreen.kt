@@ -15,9 +15,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -31,8 +35,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,6 +48,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.apilist_sergiherrador.Model.DetailFilmItem
 import com.example.apilist_sergiherrador.Model.PersonaItem
+import com.example.apilist_sergiherrador.Routes
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
 import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
 
@@ -81,6 +88,7 @@ fun DetailScreen(
     apiViewModel.isFavorite(oneFilmDetailed)
 
 
+
     if (showLoading) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -92,137 +100,176 @@ fun DetailScreen(
                 color = MaterialTheme.colorScheme.secondary
             )
         }
-    } else Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Colores.Lila.color)
-            .verticalScroll(rememberScrollState())
-    ) {
-        Column(
-            modifier = Modifier
-                .weight(0.8f)
-                .padding(top = 18.dp, start = 10.dp, end = 10.dp)
-                .fillMaxWidth(),
-        ) {
-            Box(
-                modifier = Modifier
-                    .weight(0.4f)
-                    .fillMaxWidth()
-            ) {
-                Column {
-                    IconButton(onClick = {
-                        if (isFavorite) {
-                            apiViewModel.deleteFavorite(oneFilmDetailed)
-                        } else {
-                            apiViewModel.saveAsFavorite(oneFilmDetailed)
-                        }
-                    }) {
-                        Icon(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .align(Alignment.End),
-                            imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                            contentDescription = "Añadir a favoritos"
+    } else
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = "SERGHI-BLI",
+                            textDecoration = TextDecoration.Underline,
+                            fontFamily = FontFamily.SansSerif,
+                            color = Color.White,
+                            fontSize = 20.sp
                         )
+                    },
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                navController.navigate(Routes.ListScreen.route)
+                            }, enabled = listScreenViewModel.pillarGhibliId() != ""
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = "Back",
+                                tint = if (listScreenViewModel.pillarGhibliId() != "") Color.White else Color.Black
+                            )
+                        }
                     }
-                    GlideImage(
-                        model = oneFilmDetailed.movie_banner,
-                        contentDescription = "Character Image",
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(bottom = 10.dp)
-                    )
-                }
+                )
+            },
+            bottomBar = {
+                MyBottomBar(
+                    navController = navController,
+                    listScreenViewModel = listScreenViewModel
+                )
             }
+        ) { paddingValues ->
             Column(
                 modifier = Modifier
-                    .weight(0.6f)
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .background(Colores.Lila.color)
+                    .verticalScroll(rememberScrollState())
             ) {
-                // Título grande
-                Text(
-                    text = oneFilmDetailed.title,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    fontSize = 33.sp
-                )
-
-                // Descripción
-                Text(
-                    text = oneFilmDetailed.description,
-                    modifier = Modifier.fillMaxWidth(),
-                    maxLines = 5,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                Row(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 9.dp),
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    verticalAlignment = Alignment.CenterVertically
+                        .weight(0.8f)
+                        .padding(top = 18.dp, start = 10.dp, end = 10.dp)
+                        .fillMaxWidth(),
                 ) {
-                    Column(modifier = Modifier.weight(1f)) {
-
-                        Text(text = "Nota: ${oneFilmDetailed.rt_score}")
-                        Text(text = "Director: ${oneFilmDetailed.director}")
-                        Text(text = "Año de Salida: ${oneFilmDetailed.release_date}")
-                    }
-                    Column(modifier = Modifier.weight(1f)) {
-                        Button(onClick = {
-                            listScreenViewModel.modificarShow(true)
-                        }) {
-                            Text(text = "Mostrar más")
+                    Box(
+                        modifier = Modifier
+                            .weight(0.4f)
+                            .fillMaxWidth()
+                    ) {
+                        Column {
+                            IconButton(onClick = {
+                                if (isFavorite) {
+                                    apiViewModel.deleteFavorite(oneFilmDetailed)
+                                } else {
+                                    apiViewModel.saveAsFavorite(oneFilmDetailed)
+                                }
+                            }) {
+                                Icon(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .align(Alignment.End),
+                                    imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                                    contentDescription = "Añadir a favoritos"
+                                )
+                            }
+                            GlideImage(
+                                model = oneFilmDetailed.movie_banner,
+                                contentDescription = "Character Image",
+                                contentScale = ContentScale.Fit,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(bottom = 10.dp)
+                            )
                         }
                     }
-                }
-                MyDialog(
-                    show = listScreenViewModel.pillarShow(),
-                    onDismiss = { listScreenViewModel.modificarShow(false) },
-                    filmItem = oneFilmDetailed
-                )
 
-                val moviePeopleUrls = oneFilmDetailed.people
-                Text(
-                    text = if (moviePeopleUrls[0] == "https://ghibliapi.vercel.app/people/")
-                        "No personatges trobats a l'API"
-                    else
-                        "Pesonatges: ",
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-                LazyColumn(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                        .border(
-                            border =
-                            if (moviePeopleUrls[0] == "https://ghibliapi.vercel.app/people/") {
-                                BorderStroke(0.dp, Color.Transparent)
-                            } else {
-                                BorderStroke(2.dp, Color.LightGray)
+                    Column(
+                        modifier = Modifier
+                            .weight(0.6f)
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Column(
+                            modifier = Modifier.background(Color.White.copy(alpha = 0.2f)) // Fondo semitransparente
+                        ) {
+
+
+                            // Título grande
+                            Text(
+                                text = oneFilmDetailed.title,
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                                fontSize = 33.sp
+                            )
+
+                            // Descripción
+                            Text(
+                                text = oneFilmDetailed.description,
+                                modifier = Modifier.fillMaxWidth(),
+                                maxLines = 5,
+                                overflow = TextOverflow.Ellipsis
+                            )
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 9.dp),
+                                horizontalArrangement = Arrangement.SpaceAround,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+
+                                    Text(text = "Nota: ${oneFilmDetailed.rt_score}")
+                                    Text(text = "Director: ${oneFilmDetailed.director}")
+                                    Text(text = "Año de Salida: ${oneFilmDetailed.release_date}")
+                                }
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Button(onClick = {
+                                        listScreenViewModel.modificarShow(true)
+                                    }) {
+                                        Text(text = "Mostrar más")
+                                    }
+                                }
                             }
+                            MyDialog(
+                                show = listScreenViewModel.pillarShow(),
+                                onDismiss = { listScreenViewModel.modificarShow(false) },
+                                filmItem = oneFilmDetailed
+                            )
+                        }
+                        val moviePeopleUrls = oneFilmDetailed.people
+                        Text(
+                            text = if (moviePeopleUrls[0] == "https://ghibliapi.vercel.app/people/")
+                                "No personatges trobats a l'API"
+                            else
+                                "Pesonatges: ",
+                            modifier = Modifier.padding(top = 8.dp)
                         )
-                ) {
-                    val filteredCharacters = characters.filter { character ->
-                        moviePeopleUrls.any { it.contains(character.id) }
-                    }
+                        LazyColumn(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                                .border(
+                                    border =
+                                    if (moviePeopleUrls[0] == "https://ghibliapi.vercel.app/people/") {
+                                        BorderStroke(0.dp, Color.Transparent)
+                                    } else {
+                                        BorderStroke(2.dp, Color.LightGray)
+                                    }
+                                )
+                        ) {
+                            val filteredCharacters = characters.filter { character ->
+                                moviePeopleUrls.any { it.contains(character.id) }
+                            }
 
-                    items(filteredCharacters) { character ->
-                        personaItem(character, navController, listScreenViewModel)
+                            items(filteredCharacters) { character ->
+                                personaItem(character, navController, listScreenViewModel)
+                            }
+                        }
                     }
                 }
             }
         }
-        MyBottomBar(
-            navController = navController,
-            listScreenViewModel = listScreenViewModel
-        )
-    }
 }
 
 @Composable
