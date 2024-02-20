@@ -51,7 +51,7 @@ fun DetailScreen(
     listScreenViewModel: ListDetailScreenViewModel,
     apiViewModel: APIViewModel
 ) {
-    val characters: List<PersonaItem> by apiViewModel.people.observeAsState(emptyList<PersonaItem>())
+    val characters: List<PersonaItem> by apiViewModel.people.observeAsState(emptyList())
     val oneFilmDetailed: DetailFilmItem by apiViewModel.detailFilm.observeAsState(
         DetailFilmItem(
             "",
@@ -91,6 +91,7 @@ fun DetailScreen(
     } else Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Colores.Purpura.color)
             .verticalScroll(rememberScrollState())
     ) {
         Column(

@@ -121,6 +121,7 @@ fun SpeciesDetailScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(Colores.Lila.color)
                     .verticalScroll(rememberScrollState())
                     .padding(paddingValues)
             ) {
