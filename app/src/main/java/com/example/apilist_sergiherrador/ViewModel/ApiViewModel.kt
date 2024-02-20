@@ -179,5 +179,26 @@ class APIViewModel : ViewModel() {
             }
         }
     }
+
+    fun isFavorite(filmItem: DetailFilmItem){
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.isFavorite(filmItem)
+            withContext(Dispatchers.Main){
+                _isFavorite.value = response
+            }
+        }
+    }
+
+    fun saveAsFavorite(filmItem: DetailFilmItem){
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.saveAsFavorite(filmItem)
+        }
+    }
+
+    fun deleteFavorite(filmItem: DetailFilmItem){
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.deleteFavorite(filmItem)
+        }
+    }
 }
 

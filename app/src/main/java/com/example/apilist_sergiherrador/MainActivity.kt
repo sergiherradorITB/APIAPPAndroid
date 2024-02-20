@@ -44,6 +44,9 @@ class MainActivity : ComponentActivity() {
                 composable(Routes.LocationDetail.route){
                     LocationDetailScreen(navigationController,listScreenViewModel,apiViewModel)
                 }
+                composable(Routes.Favorite.route){
+                    FavoritesScreen(navigationController,apiViewModel,listScreenViewModel)
+                }
             }
         }
     }

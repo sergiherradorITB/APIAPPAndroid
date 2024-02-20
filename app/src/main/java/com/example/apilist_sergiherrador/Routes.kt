@@ -14,7 +14,7 @@ sealed class Routes(val route:String) {
 
     object Location:Routes("locations")
     object LocationDetail:Routes("locations_detail")
-
+    object Favorite:Routes("favorite")
 
 
 }

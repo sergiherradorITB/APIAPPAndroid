@@ -47,6 +47,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.apilist_sergiherrador.Model.AllFilms
 import com.example.apilist_sergiherrador.Model.BottomNavigationScreens
+import com.example.apilist_sergiherrador.Model.DetailFilmItem
 import com.example.apilist_sergiherrador.Routes
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
 import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
@@ -126,7 +127,7 @@ fun ListScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
-                        .background(Colores.Purpura.color)
+                        .background(Colores.Lila.color)
                         .padding(paddingValues)
                 ) {
                     if (searchStatus) {
@@ -185,7 +186,46 @@ fun GhibliItem(
 
                     Button(modifier = Modifier.padding(top = 2.dp),
                         onClick = {
-                            listScreenViewModel.modificarGhibli(ghibli)
+                            //listScreenViewModel.modificarGhibli(ghibli)
+                            listScreenViewModel.modificarGhibliId(ghibli.id)
+                            navController.navigate(Routes.DetailScreen.route)
+                        }) {
+                        Text(text = "Ver detalles")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun GhibliItem(
+    ghibli: DetailFilmItem,
+    navController: NavController,
+    listScreenViewModel: ListDetailScreenViewModel
+) {
+    Card(border = BorderStroke(2.dp, Color.LightGray), modifier = Modifier.fillMaxWidth()) {
+        Column {
+            Row {
+                GlideImage(
+                    model = ghibli.image,
+                    contentDescription = "Character Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(100.dp)
+                )
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Text(text = ghibli.title)
+                    Text(text = ghibli.original_title)
+
+                    Button(modifier = Modifier.padding(top = 2.dp),
+                        onClick = {
+                            //listScreenViewModel.modificarGhibliFavorite(ghibli)
+                            listScreenViewModel.modificarGhibliId(ghibli.id)
                             navController.navigate(Routes.DetailScreen.route)
                         }) {
                         Text(text = "Ver detalles")

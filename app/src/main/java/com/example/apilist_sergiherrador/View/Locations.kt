@@ -134,7 +134,7 @@ fun Location(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
-                        .background(Colores.Purpura.color)
+                        .background(Colores.Lila.color)
                         .padding(paddingValues)
                 ) {
                     if (searchStatus) {

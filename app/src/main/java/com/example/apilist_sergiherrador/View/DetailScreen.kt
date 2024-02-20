@@ -17,6 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -74,8 +75,11 @@ fun DetailScreen(
         )
     )
     val showLoading: Boolean by apiViewModel.loadingFilm.observeAsState(true)
+    val isFavorite by apiViewModel.isFavorite.observeAsState(initial = false)
     apiViewModel.getPeople()
-    apiViewModel.getOneFilm(listScreenViewModel.pillarGhibli().id)
+    apiViewModel.getOneFilm(listScreenViewModel.pillarGhibliId())
+    apiViewModel.isFavorite(oneFilmDetailed)
+
 
     if (showLoading) {
         Column(
@@ -91,7 +95,7 @@ fun DetailScreen(
     } else Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Colores.Purpura.color)
+            .background(Colores.Lila.color)
             .verticalScroll(rememberScrollState())
     ) {
         Column(
@@ -106,13 +110,18 @@ fun DetailScreen(
                     .fillMaxWidth()
             ) {
                 Column {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+                        if (isFavorite) {
+                            apiViewModel.deleteFavorite(oneFilmDetailed)
+                        } else {
+                            apiViewModel.saveAsFavorite(oneFilmDetailed)
+                        }
+                    }) {
                         Icon(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .align(Alignment.End),
-                            imageVector = Icons.Default.Favorite,
-                            tint = Colores.Lila.color,
+                            imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                             contentDescription = "Añadir a favoritos"
                         )
                     }
@@ -124,7 +133,6 @@ fun DetailScreen(
                             .fillMaxSize()
                             .padding(bottom = 10.dp)
                     )
-
                 }
             }
             Column(
