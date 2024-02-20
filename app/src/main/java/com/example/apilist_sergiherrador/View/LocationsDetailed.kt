@@ -123,7 +123,7 @@ fun LocationDetailScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Colores.Purpura.color)
+                    .background(Colores.Lila.color)
                     .verticalScroll(rememberScrollState())
                     .padding(paddingValues)
             ) {

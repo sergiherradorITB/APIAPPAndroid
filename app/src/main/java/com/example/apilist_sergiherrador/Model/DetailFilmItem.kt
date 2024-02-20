@@ -1,8 +1,13 @@
 package com.example.apilist_sergiherrador.Model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "DetailFilmEntity")
 data class DetailFilmItem(
     val description: String,
     val director: String,
+    @PrimaryKey
     val id: String,
     val image: String,
     val locations: List<String>,

@@ -51,10 +51,15 @@ class APIViewModel : ViewModel() {
     private val _locationsDetailed = MutableLiveData<LocationItem>() // LiveData para almacenar personas
     val locationItemDetailed = _locationsDetailed
 
-
     // Busqueda del text
     private val _searchText = MutableLiveData<String>()
     val searchText: MutableLiveData<String> = _searchText
+
+    // Database
+    private val _isFavorite = MutableLiveData(false)
+    val isFavorite = _isFavorite
+    private val _favorites = MutableLiveData<MutableList<DetailFilmItem>>()
+    val favorites = _favorites
 
     //Pelicules
     fun getFilms() {
@@ -163,6 +168,16 @@ class APIViewModel : ViewModel() {
 
     fun onSearchTextChange(text: String) {
         _searchText.value = text
+    }
+
+    fun getFavorites(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = repository.getFavorites()
+            withContext(Dispatchers.Main){
+                _favorites.value = response
+                _loading.value = false
+            }
+        }
     }
 }
 
