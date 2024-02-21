@@ -18,6 +18,7 @@ import com.example.apilist_sergiherrador.R
 
 class ListDetailScreenViewModel : ViewModel() {
     // private var ghibli: AllFilms by mutableStateOf(AllFilms("", "", "", "", "", "", ""))
+
     private var id:String by mutableStateOf("")
     private var show by mutableStateOf(false)
     private var specie: SpeciesItem by mutableStateOf(
@@ -46,13 +47,6 @@ class ListDetailScreenViewModel : ViewModel() {
         )
     )
 
-    private var ghibliFavorite: DetailFilmItem by mutableStateOf(
-        DetailFilmItem(
-            "", "", "", "",
-            emptyList(), "", "", "", emptyList(), "", "", "", "", emptyList(), "", "", emptyList(),
-        )
-    )
-
     fun pillarShow(): Boolean {
         return show
     }
@@ -74,10 +68,6 @@ class ListDetailScreenViewModel : ViewModel() {
     /*fun modificarGhibli(dataItem: AllFilms) {
         ghibli = dataItem
     }*/
-
-    fun modificarGhibliFavorite(dataItem: DetailFilmItem) {
-        ghibliFavorite = dataItem
-    }
 
     fun pillarSpecie(): SpeciesItem {
         return specie
