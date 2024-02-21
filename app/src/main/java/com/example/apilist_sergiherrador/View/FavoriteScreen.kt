@@ -128,6 +128,7 @@ fun FavoritesScreen(
             }
         ) { paddingValues ->
             Box(modifier = Modifier.fillMaxSize()) {
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -135,7 +136,9 @@ fun FavoritesScreen(
                         .background(Colores.Lila.color)
                         .padding(paddingValues)
                 ) {
-
+                    if (searchStatus) {
+                        busqueda(searchText, apiViewModel)
+                    }
                     LazyColumn(
                         modifier = Modifier
                             .weight(1f)

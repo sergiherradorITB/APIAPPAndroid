@@ -190,7 +190,7 @@ fun GhibliItem(
     navController: NavController,
     listScreenViewModel: ListDetailScreenViewModel
 ) {
-    Card(border = BorderStroke(2.dp, Color.LightGray), modifier = Modifier.fillMaxWidth()) {
+    Card(border = BorderStroke(2.dp, Colores.LilaBorde.color), modifier = Modifier.fillMaxWidth()) {
         Column() {
             Row {
                 GlideImage(
@@ -228,7 +228,7 @@ fun GhibliItem(
     navController: NavController,
     listScreenViewModel: ListDetailScreenViewModel
 ) {
-    Card(border = BorderStroke(2.dp, Color.LightGray), modifier = Modifier.fillMaxWidth()) {
+    Card(border = BorderStroke(2.dp, Colores.LilaBorde.color), modifier = Modifier.fillMaxWidth()) {
         Column {
             Row {
                 GlideImage(

@@ -121,8 +121,8 @@ fun DetailScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
+                                modifier = Modifier.fillMaxWidth(),
                                 text = "SERGIBLI ©",
-                                modifier = Modifier.weight(1f),
                                 style = TextStyle(fontFamily = fontFamily),
                                 color = Color.White,
                                 fontSize = 23.sp,
@@ -208,23 +208,33 @@ fun DetailScreen(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Column(
-                            modifier = Modifier.background(Color.White.copy(alpha = 0.2f)) // Fondo semitransparente
+                            modifier = Modifier.background(Color.White.copy(alpha = 0.3f)).padding(2.dp) // Fondo semitransparente
                         ) {
+                            val context = LocalContext.current
 
+                            val fontFamily = remember {
+                                FontFamily(
+                                    typeface = ResourcesCompat.getFont(context, R.font.novirus)!!
+                                )
+                            }
                             // Título grande
                             Text(
                                 text = oneFilmDetailed.title,
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Center,
+                                style = TextStyle(fontFamily = fontFamily),
                                 fontSize = 33.sp
                             )
 
                             // Descripción
                             Text(
                                 text = oneFilmDetailed.description,
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 4.dp),
                                 maxLines = 5,
-                                overflow = TextOverflow.Ellipsis
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Justify
                             )
 
                             Row(
@@ -235,10 +245,33 @@ fun DetailScreen(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Column(modifier = Modifier.weight(1f)) {
-
-                                    Text(text = "Nota: ${oneFilmDetailed.rt_score}")
-                                    Text(text = "Director: ${oneFilmDetailed.director}")
-                                    Text(text = "Año de Salida: ${oneFilmDetailed.release_date}")
+                                    Row {
+                                        Text(
+                                            text = "Nota: ",
+                                            style = TextStyle(fontWeight = FontWeight.Bold)
+                                        )
+                                        Text(
+                                            text = "${oneFilmDetailed.rt_score}",
+                                        )
+                                    }
+                                    Row {
+                                        Text(
+                                            text = "Director: ",
+                                            style = TextStyle(fontWeight = FontWeight.Bold)
+                                        )
+                                        Text(
+                                            text = "${oneFilmDetailed.director}",
+                                        )
+                                    }
+                                    Row {
+                                        Text(
+                                            text = "Año de Salida: ",
+                                            style = TextStyle(fontWeight = FontWeight.Bold)
+                                        )
+                                        Text(
+                                            text = "${oneFilmDetailed.release_date}",
+                                        )
+                                    }
                                 }
                                 Column(modifier = Modifier.weight(1f)) {
                                     Button(onClick = {
@@ -314,7 +347,7 @@ fun MyDialog(show: Boolean, onDismiss: () -> Unit, filmItem: DetailFilmItem) {
                     text = "Título original: ${filmItem.original_title}",
                     color = Color.White,
                     fontSize = 16.sp,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = 20.dp)
                 )
                 Text(
                     text = "Director: ${filmItem.director}",
