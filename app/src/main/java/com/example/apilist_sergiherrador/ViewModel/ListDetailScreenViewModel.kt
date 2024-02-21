@@ -1,8 +1,12 @@
 package com.example.apilist_sergiherrador.ViewModel
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +14,7 @@ import com.example.apilist_sergiherrador.Model.AllFilms
 import com.example.apilist_sergiherrador.Model.DetailFilmItem
 import com.example.apilist_sergiherrador.Model.LocationItem
 import com.example.apilist_sergiherrador.Model.SpeciesItem
+import com.example.apilist_sergiherrador.R
 
 class ListDetailScreenViewModel : ViewModel() {
     // private var ghibli: AllFilms by mutableStateOf(AllFilms("", "", "", "", "", "", ""))

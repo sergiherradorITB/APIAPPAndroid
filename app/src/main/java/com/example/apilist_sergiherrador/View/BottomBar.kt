@@ -39,11 +39,11 @@ fun MyBottomBar(
         val currentRoute = navBackStackEntry?.destination?.route
         bottomNavigationItems.forEach { item ->
             BottomNavigationItem(
-                icon = { Icon(item.icon, contentDescription = item.label, tint = if (currentRoute == item.route) Color.White else Color.Black) },
+                icon = { Icon(item.icon, contentDescription = item.label, tint = if (currentRoute == item.route) Color.White else Colores.PurpuraFuerte.color) },
                 label = { Text(item.label, color = if (currentRoute == item.route) Color.White else Color.Black) },
                 selected = currentRoute == item.route,
-                selectedContentColor = Color.White,
-                unselectedContentColor = Color.Black,
+                selectedContentColor = Colores.Purpura.color,
+                unselectedContentColor = Color.Transparent,
                 alwaysShowLabel = false,
                 onClick = {
                     if (currentRoute != item.route) {

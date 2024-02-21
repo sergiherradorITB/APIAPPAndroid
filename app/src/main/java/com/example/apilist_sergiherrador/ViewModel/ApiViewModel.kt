@@ -189,15 +189,17 @@ class APIViewModel : ViewModel() {
         }
     }
 
-    fun saveAsFavorite(filmItem: DetailFilmItem){
+    fun saveAsFavorite(filmItem: DetailFilmItem) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.saveAsFavorite(filmItem)
+            _isFavorite.postValue(true) // Actualizar el LiveData
         }
     }
 
-    fun deleteFavorite(filmItem: DetailFilmItem){
+    fun deleteFavorite(filmItem: DetailFilmItem) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.deleteFavorite(filmItem)
+            _isFavorite.postValue(false) // Actualizar el LiveData
         }
     }
 }

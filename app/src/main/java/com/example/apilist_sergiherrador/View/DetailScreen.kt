@@ -31,10 +31,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -43,11 +46,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.apilist_sergiherrador.Model.DetailFilmItem
 import com.example.apilist_sergiherrador.Model.PersonaItem
+import com.example.apilist_sergiherrador.R
 import com.example.apilist_sergiherrador.Routes
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
 import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
@@ -87,8 +92,6 @@ fun DetailScreen(
     apiViewModel.getOneFilm(listScreenViewModel.pillarGhibliId())
     apiViewModel.isFavorite(oneFilmDetailed)
 
-
-
     if (showLoading) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -100,18 +103,32 @@ fun DetailScreen(
                 color = MaterialTheme.colorScheme.secondary
             )
         }
-    } else
+    } else {
+        val context = LocalContext.current
+        val fontFamily = remember {
+            FontFamily(
+                typeface = ResourcesCompat.getFont(context, R.font.mogilte)!!
+            )
+        }
+
         Scaffold(
             topBar = {
                 TopAppBar(
+                    backgroundColor = Colores.Purpura.color,
                     title = {
-                        Text(
-                            text = "SERGHI-BLI",
-                            textDecoration = TextDecoration.Underline,
-                            fontFamily = FontFamily.SansSerif,
-                            color = Color.White,
-                            fontSize = 20.sp
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "SERGIBLI ©",
+                                modifier = Modifier.weight(1f),
+                                style = TextStyle(fontFamily = fontFamily),
+                                color = Color.White,
+                                fontSize = 23.sp,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     },
                     navigationIcon = {
                         IconButton(
@@ -154,13 +171,15 @@ fun DetailScreen(
                             .fillMaxWidth()
                     ) {
                         Column {
-                            IconButton(onClick = {
-                                if (isFavorite) {
-                                    apiViewModel.deleteFavorite(oneFilmDetailed)
-                                } else {
-                                    apiViewModel.saveAsFavorite(oneFilmDetailed)
+                            IconButton(
+                                onClick = {
+                                    if (isFavorite) {
+                                        apiViewModel.deleteFavorite(oneFilmDetailed)
+                                    } else {
+                                        apiViewModel.saveAsFavorite(oneFilmDetailed)
+                                    }
                                 }
-                            }) {
+                            ) {
                                 Icon(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -191,7 +210,6 @@ fun DetailScreen(
                         Column(
                             modifier = Modifier.background(Color.White.copy(alpha = 0.2f)) // Fondo semitransparente
                         ) {
-
 
                             // Título grande
                             Text(
@@ -270,6 +288,7 @@ fun DetailScreen(
                 }
             }
         }
+    }
 }
 
 @Composable

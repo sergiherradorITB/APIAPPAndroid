@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,18 +25,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.NavController
 import com.example.apilist_sergiherrador.Model.DetailFilmItem
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
 import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
 import com.example.apilist_sergiherrador.Model.*
+import com.example.apilist_sergiherrador.R
 import com.example.apilist_sergiherrador.Routes
 
 @Composable
@@ -62,17 +69,32 @@ fun FavoritesScreen(
             )
         }
     } else {
+        val context = LocalContext.current
+
+        val fontFamily = remember {
+            FontFamily(
+                typeface = ResourcesCompat.getFont(context, R.font.mogilte)!!
+            )
+        }
+
         Scaffold(
             topBar = {
                 TopAppBar(
+                    backgroundColor = Colores.Purpura.color,
                     title = {
-                        Text(
-                            text = "SERGHI-BLI",
-                            textDecoration = TextDecoration.Underline,
-                            fontFamily = FontFamily.SansSerif,
-                            color = Color.White,
-                            fontSize = 20.sp
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "SERGIBLI ©",
+                                modifier = Modifier.weight(1f),
+                                style = TextStyle(fontFamily = fontFamily),
+                                color = Color.White,
+                                fontSize = 23.sp,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     },
                     navigationIcon = {
                         IconButton(
