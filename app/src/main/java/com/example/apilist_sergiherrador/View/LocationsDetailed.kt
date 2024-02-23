@@ -130,7 +130,13 @@ fun LocationDetailScreen(
                                 tint = Color.White
                             )
                         }
-                    },
+                    }, actions = {
+                        // Aquí llamamos a la función de compartir
+                        ShareButton(
+                            text = "Hola, mira esta localizacion: ${oneLocationDetailed.name}\nTiene el clima ${oneLocationDetailed.climate}\nEs una pasada! ${oneLocationDetailed.url}",
+                            context = context,
+                        )
+                    }
                 )
             },
             bottomBar = {

@@ -1,5 +1,7 @@
 package com.example.apilist_sergiherrador.View
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,7 +24,9 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,6 +50,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -65,27 +70,7 @@ fun DetailScreen(
     apiViewModel: APIViewModel
 ) {
     val characters: List<PersonaItem> by apiViewModel.people.observeAsState(emptyList())
-    val oneFilmDetailed: DetailFilmItem by apiViewModel.detailFilm.observeAsState(
-        DetailFilmItem(
-            "",
-            "",
-            "",
-            "",
-            listOf(),
-            "",
-            "",
-            "",
-            listOf(),
-            "",
-            "",
-            "",
-            "",
-            listOf(),
-            "",
-            "",
-            listOf()
-        )
-    )
+    val oneFilmDetailed: DetailFilmItem by apiViewModel.detailFilm.observeAsState(DetailFilmItem("", "", "", "", listOf(), "", "", "", listOf(), "", "", "", "", listOf(), "", "", listOf()))
     val showLoading: Boolean by apiViewModel.loadingFilm.observeAsState(true)
     val isFavorite by apiViewModel.isFavorite.observeAsState(initial = false)
     apiViewModel.getPeople()
@@ -116,25 +101,21 @@ fun DetailScreen(
                 TopAppBar(
                     backgroundColor = Colores.Purpura.color,
                     title = {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = "SERGIBLI ©",
-                                style = TextStyle(fontFamily = fontFamily),
-                                color = Color.White,
-                                fontSize = 23.sp,
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                        Text(
+                            text = "SERGIBLI ©",
+                            style = TextStyle(fontFamily = fontFamily),
+                            color = Color.White,
+                            fontSize = 23.sp,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     },
                     navigationIcon = {
                         IconButton(
                             onClick = {
                                 navController.navigate(Routes.ListScreen.route)
-                            }, enabled = listScreenViewModel.pillarGhibliId() != ""
+                            },
+                            enabled = listScreenViewModel.pillarGhibliId() != ""
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
@@ -142,6 +123,13 @@ fun DetailScreen(
                                 tint = if (listScreenViewModel.pillarGhibliId() != "") Color.White else Color.Black
                             )
                         }
+                    },
+                    actions = {
+                        // Aquí llamamos a la función de compartir
+                        ShareButton(
+                            text = "Hola, mira esta peli: ${oneFilmDetailed.title}\nTiene una nota de: ${oneFilmDetailed.rt_score}\nEs una pasada! ${oneFilmDetailed.url}",
+                            context = context,
+                        )
                     }
                 )
             },
@@ -375,5 +363,27 @@ fun MyDialog(show: Boolean, onDismiss: () -> Unit, filmItem: DetailFilmItem) {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun ShareButton(text: String, context: Context) {
+    val sendIntent = Intent(Intent.ACTION_SEND).apply {
+        putExtra(Intent.EXTRA_TEXT, text)
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+
+    IconButton(
+        modifier = Modifier,
+        onClick = {
+            ContextCompat.startActivity(context, shareIntent, null)
+        },
+    ) {
+        Icon(
+            imageVector = Icons.Default.Share,
+            contentDescription = "Share",
+            tint = Color.White
+        )
     }
 }

@@ -129,6 +129,13 @@ fun SpeciesDetailScreen(
                             )
                         }
                     },
+                    actions = {
+                        // Aquí llamamos a la función de compartir
+                        ShareButton(
+                            text = "Hola, mira esta especie: ${oneSpecieDetailed.name}\nTiene los ojos ${oneSpecieDetailed.eye_colors}\nEs una pasada! ${oneSpecieDetailed.url}",
+                            context = context,
+                        )
+                    }
                 )
             },
             bottomBar = {
@@ -164,15 +171,13 @@ fun SpeciesDetailScreen(
                             textAlign = TextAlign.Center,
                             fontSize = 33.sp
                         )
-
                         // Descripción
                         Text(
-                            text = oneSpecieDetailed.eye_colors,
+                            text = "Eye colors: ${oneSpecieDetailed.eye_colors}",
                             modifier = Modifier.fillMaxWidth(),
                             maxLines = 5,
                             overflow = TextOverflow.Ellipsis
                         )
-
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -181,14 +186,12 @@ fun SpeciesDetailScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
-
                                 Text(text = "Classification: ${oneSpecieDetailed.classification}")
                                 Text(text = "Hair Colors: ${oneSpecieDetailed.hair_colors}")
                             }
                         }
                     }
                 }
-
                 Box(
                     modifier = Modifier
                         .weight(1f)
@@ -252,8 +255,6 @@ fun SpeciesDetailScreen(
                                 }
                             }
                         }
-
-
                     }
                 }
             }

@@ -21,6 +21,7 @@ class ListDetailScreenViewModel : ViewModel() {
 
     private var id:String by mutableStateOf("")
     private var show by mutableStateOf(false)
+
     private var specie: SpeciesItem by mutableStateOf(
         SpeciesItem(
             "",
