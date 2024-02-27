@@ -1,7 +1,9 @@
-package com.example.apilist_sergiherrador.View
+package com.example.apilist_sergiherrador.View.Locations
+
+import GhibliItem
+import com.example.apilist_sergiherrador.Model.LocationItem
 
 import com.example.apilist_sergiherrador.Model.AllFilms
-import com.example.apilist_sergiherrador.Model.SpeciesItem
 import com.example.apilist_sergiherrador.Model.PersonaItem
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -22,9 +24,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,43 +36,40 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
-import com.example.apilist_sergiherrador.Model.DetailFilmItem
 import com.example.apilist_sergiherrador.R
 import com.example.apilist_sergiherrador.Routes
+import com.example.apilist_sergiherrador.View.MyBottomBar
+import com.example.apilist_sergiherrador.View.PersonaScreen.personaItem
+import com.example.apilist_sergiherrador.View.ListScreen.ShareButton
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
 import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun SpeciesDetailScreen(
+fun LocationDetailScreen(
     navController: NavController,
     listScreenViewModel: ListDetailScreenViewModel,
     apiViewModel: APIViewModel
 ) {
-    val oneSpecieDetailed: SpeciesItem by apiViewModel.speciesItemDetailed.observeAsState(
-        listScreenViewModel.pillarSpecie()
+    val oneLocationDetailed: LocationItem by apiViewModel.locationItemDetailed.observeAsState(
+        listScreenViewModel.pillarLocation()
     )
+
     val characters: List<PersonaItem> by apiViewModel.people.observeAsState(emptyList<PersonaItem>())
     val films: List<AllFilms> by apiViewModel.films.observeAsState(emptyList<AllFilms>())
     val showLoading: Boolean by apiViewModel.loading.observeAsState(true)
-    val searchStatus: Boolean by listScreenViewModel.status.observeAsState(false)
+    apiViewModel.getLocationDetailed(listScreenViewModel.pillarLocation().id)
 
-    apiViewModel.getSpeciesDetailed(listScreenViewModel.pillarSpecie().id)
     apiViewModel.getFilms()
     apiViewModel.getPeople()
 
@@ -119,7 +115,7 @@ fun SpeciesDetailScreen(
                     navigationIcon = {
                         IconButton(
                             onClick = {
-                                navController.navigate(Routes.Species.route)
+                                navController.navigate(Routes.Location.route)
                             }
                         ) {
                             Icon(
@@ -128,11 +124,10 @@ fun SpeciesDetailScreen(
                                 tint = Color.White
                             )
                         }
-                    },
-                    actions = {
+                    }, actions = {
                         // Aquí llamamos a la función de compartir
                         ShareButton(
-                            text = "Hola, mira esta especie: ${oneSpecieDetailed.name}\nTiene los ojos ${oneSpecieDetailed.eye_colors}\nEs una pasada! ${oneSpecieDetailed.url}",
+                            text = "Hola, mira esta localizacion: ${oneLocationDetailed.name}\nTiene el clima ${oneLocationDetailed.climate}\nEs una pasada! ${oneLocationDetailed.url}",
                             context = context,
                         )
                     }
@@ -141,7 +136,6 @@ fun SpeciesDetailScreen(
             bottomBar = {
                 MyBottomBar(
                     navController = navController,
-                    listScreenViewModel = listScreenViewModel
                 )
             }
         ) { paddingValues ->
@@ -166,18 +160,20 @@ fun SpeciesDetailScreen(
                     ) {
                         // Título grande
                         Text(
-                            text = oneSpecieDetailed.name,
+                            text = oneLocationDetailed.name,
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center,
                             fontSize = 33.sp
                         )
+
                         // Descripción
                         Text(
-                            text = "Eye colors: ${oneSpecieDetailed.eye_colors}",
+                            text = oneLocationDetailed.climate,
                             modifier = Modifier.fillMaxWidth(),
                             maxLines = 5,
                             overflow = TextOverflow.Ellipsis
                         )
+
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -186,50 +182,33 @@ fun SpeciesDetailScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(text = "Classification: ${oneSpecieDetailed.classification}")
-                                Text(text = "Hair Colors: ${oneSpecieDetailed.hair_colors}")
+
+                                Text(text = "Classification: ${oneLocationDetailed.surface_water}")
+                                Text(text = "Hair Colors: ${oneLocationDetailed.climate}")
                             }
                         }
                     }
                 }
+
                 Box(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()
-                        .padding(horizontal = 10.dp, vertical = 8.dp) // Ajuste de los márgenes y espacios de relleno
+                        .padding(
+                            horizontal = 10.dp,
+                            vertical = 8.dp
+                        ) // Ajuste de los márgenes y espacios de relleno
                 ) {
                     Column(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        val PeopleUrls = oneSpecieDetailed.people
-                        val FilmsUrls = oneSpecieDetailed.films
+                        val PeopleUrls =
+                            oneLocationDetailed.residents ?: emptyList() // Manejo de lista nula
+                        val filmUrls =
+                            oneLocationDetailed.films ?: emptyList() // Manejo de lista nula
 
                         Text(
-                            text = "Films that ${oneSpecieDetailed.name} appears: ",
-                            modifier = Modifier.padding(top = 8.dp)
-                        )
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(vertical = 8.dp)
-                        ) {
-                            LazyColumn(
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                val filteredFilms = films.filter { film ->
-                                    FilmsUrls.any { it.contains(film.id) }
-                                }
-
-                                items(filteredFilms) { film ->
-                                    GhibliItem(film, navController, listScreenViewModel)
-                                }
-                            }
-                        }
-                        Text(
-                            text = if (PeopleUrls[0] == "https://ghibliapi.vercel.app/people/")
-                                "No personatges trobats a l'API"
-                            else
-                                "Characters that are ${oneSpecieDetailed.name}: ",
+                            text = "Characters that appears on ${oneLocationDetailed.name}: ",
                             modifier = Modifier.padding(top = 8.dp)
                         )
                         Box(
@@ -237,23 +216,58 @@ fun SpeciesDetailScreen(
                                 .weight(1f)
                                 .padding(vertical = 8.dp)
                                 .border(
-                                    border = if (PeopleUrls[0] == "https://ghibliapi.vercel.app/people/")
+                                    border = if (PeopleUrls.isEmpty()) // Verificación de lista vacía
                                         BorderStroke(0.dp, Color.Transparent)
                                     else
                                         BorderStroke(2.dp, Color.LightGray)
                                 )
                         ) {
-                            LazyColumn(
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                val filteredCharacters = characters.filter { character ->
-                                    PeopleUrls.any { it.contains(character.id) }
-                                }
+                            if (PeopleUrls.isEmpty()) {
+                                Text(
+                                    text = "No characters found in the API",
+                                    modifier = Modifier.fillMaxSize(),
+                                    textAlign = TextAlign.Center
+                                )
+                            } else {
+                                LazyColumn(
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    val filteredCharacters = characters.filter { character ->
+                                        PeopleUrls.any { it.contains(character.id) }
+                                    }
 
-                                items(filteredCharacters) { character ->
-                                    personaItem(character, navController, listScreenViewModel)
+                                    items(filteredCharacters) { character ->
+                                        personaItem(character, navController, listScreenViewModel)
+                                    }
                                 }
                             }
+                        }
+
+                        Text(
+                            text = "Films that ${oneLocationDetailed.name} appears: ",
+                            modifier = Modifier.padding(top = 8.dp)
+                        )
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(vertical = 8.dp)
+                        ) {
+                            if (filmUrls.isEmpty()) {
+                                Text(text = "No hay pelis con este clima")
+                            } else {
+                                LazyColumn(
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    val filteredFilms = films.filter { film ->
+                                        oneLocationDetailed.films.any { it.contains(film.id) }
+                                    }
+
+                                    items(filteredFilms) { film ->
+                                        GhibliItem(film, navController, listScreenViewModel)
+                                    }
+                                }
+                            }
+
                         }
                     }
                 }

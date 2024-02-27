@@ -7,8 +7,14 @@ import androidx.activity.viewModels
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.apilist_sergiherrador.View.ListScreen
 import com.example.apilist_sergiherrador.View.*
+import com.example.apilist_sergiherrador.View.FavoriteScreen.FavoritesScreen
+import com.example.apilist_sergiherrador.View.ListScreen.DetailScreen
+import com.example.apilist_sergiherrador.View.Locations.Location
+import com.example.apilist_sergiherrador.View.Locations.LocationDetailScreen
+import com.example.apilist_sergiherrador.View.PersonaScreen.CharScreen
+import com.example.apilist_sergiherrador.View.Species.Species
+import com.example.apilist_sergiherrador.View.Species.SpeciesDetailScreen
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
 import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
 

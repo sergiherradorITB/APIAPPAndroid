@@ -1,4 +1,4 @@
-package com.example.apilist_sergiherrador.View
+package com.example.apilist_sergiherrador.View.ListScreen
 
 import android.content.Context
 import android.content.Intent
@@ -23,10 +23,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,7 +43,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,6 +56,8 @@ import com.example.apilist_sergiherrador.Model.DetailFilmItem
 import com.example.apilist_sergiherrador.Model.PersonaItem
 import com.example.apilist_sergiherrador.R
 import com.example.apilist_sergiherrador.Routes
+import com.example.apilist_sergiherrador.View.MyBottomBar
+import com.example.apilist_sergiherrador.View.PersonaScreen.personaItem
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
 import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
 
@@ -97,48 +96,8 @@ fun DetailScreen(
         }
 
         Scaffold(
-            topBar = {
-                TopAppBar(
-                    backgroundColor = Colores.Purpura.color,
-                    title = {
-                        Text(
-                            text = "SERGIBLI ©",
-                            style = TextStyle(fontFamily = fontFamily),
-                            color = Color.White,
-                            fontSize = 23.sp,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(
-                            onClick = {
-                                navController.navigate(Routes.ListScreen.route)
-                            },
-                            enabled = listScreenViewModel.pillarGhibliId() != ""
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                contentDescription = "Back",
-                                tint = if (listScreenViewModel.pillarGhibliId() != "") Color.White else Color.Black
-                            )
-                        }
-                    },
-                    actions = {
-                        // Aquí llamamos a la función de compartir
-                        ShareButton(
-                            text = "Hola, mira esta peli: ${oneFilmDetailed.title}\nTiene una nota de: ${oneFilmDetailed.rt_score}\nEs una pasada! ${oneFilmDetailed.url}",
-                            context = context,
-                        )
-                    }
-                )
-            },
-            bottomBar = {
-                MyBottomBar(
-                    navController = navController,
-                    listScreenViewModel = listScreenViewModel
-                )
-            }
+            topBar = { DetailTopBar(fontFamily, navController, listScreenViewModel, oneFilmDetailed, context) },
+            bottomBar = { MyBottomBar(navController = navController,) }
         ) { paddingValues ->
             Column(
                 modifier = Modifier
@@ -195,86 +154,8 @@ fun DetailScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Column(
-                            modifier = Modifier.background(Color.White.copy(alpha = 0.3f)).padding(2.dp) // Fondo semitransparente
-                        ) {
-                            val context = LocalContext.current
+                        InformationAboutItem(oneFilmDetailed, listScreenViewModel)
 
-                            val fontFamily = remember {
-                                FontFamily(
-                                    typeface = ResourcesCompat.getFont(context, R.font.novirus)!!
-                                )
-                            }
-                            // Título grande
-                            Text(
-                                text = oneFilmDetailed.title,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                style = TextStyle(fontFamily = fontFamily),
-                                fontSize = 33.sp
-                            )
-
-                            // Descripción
-                            Text(
-                                text = oneFilmDetailed.description,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 4.dp),
-                                maxLines = 5,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Justify
-                            )
-
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 9.dp),
-                                horizontalArrangement = Arrangement.SpaceAround,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Row {
-                                        Text(
-                                            text = "Nota: ",
-                                            style = TextStyle(fontWeight = FontWeight.Bold)
-                                        )
-                                        Text(
-                                            text = "${oneFilmDetailed.rt_score}",
-                                        )
-                                    }
-                                    Row {
-                                        Text(
-                                            text = "Director: ",
-                                            style = TextStyle(fontWeight = FontWeight.Bold)
-                                        )
-                                        Text(
-                                            text = "${oneFilmDetailed.director}",
-                                        )
-                                    }
-                                    Row {
-                                        Text(
-                                            text = "Año de Salida: ",
-                                            style = TextStyle(fontWeight = FontWeight.Bold)
-                                        )
-                                        Text(
-                                            text = "${oneFilmDetailed.release_date}",
-                                        )
-                                    }
-                                }
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Button(onClick = {
-                                        listScreenViewModel.modificarShow(true)
-                                    }) {
-                                        Text(text = "Mostrar más")
-                                    }
-                                }
-                            }
-                            MyDialog(
-                                show = listScreenViewModel.pillarShow(),
-                                onDismiss = { listScreenViewModel.modificarShow(false) },
-                                filmItem = oneFilmDetailed
-                            )
-                        }
                         val moviePeopleUrls = oneFilmDetailed.people
                         Text(
                             text = if (moviePeopleUrls[0] == "https://ghibliapi.vercel.app/people/")
@@ -311,6 +192,8 @@ fun DetailScreen(
         }
     }
 }
+
+
 
 @Composable
 fun MyDialog(show: Boolean, onDismiss: () -> Unit, filmItem: DetailFilmItem) {

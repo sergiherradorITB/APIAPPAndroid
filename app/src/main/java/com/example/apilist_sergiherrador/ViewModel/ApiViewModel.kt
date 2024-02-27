@@ -53,7 +53,7 @@ class APIViewModel : ViewModel() {
 
     // Busqueda del text
     private val _searchText = MutableLiveData<String>()
-    val searchText: MutableLiveData<String> = _searchText
+    val searchText = _searchText
 
     // Database
     private val _isFavorite = MutableLiveData(false)
@@ -203,4 +203,3 @@ class APIViewModel : ViewModel() {
         }
     }
 }
-

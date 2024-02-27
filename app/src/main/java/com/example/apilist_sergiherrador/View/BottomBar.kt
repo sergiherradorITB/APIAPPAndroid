@@ -29,7 +29,6 @@ val bottomNavigationItems = listOf<BottomNavigationScreens>(
 @Composable
 fun MyBottomBar(
     navController: NavController,
-    listScreenViewModel: ListDetailScreenViewModel
 ) {
     BottomNavigation(
         backgroundColor = Colores.Purpura.color,
@@ -55,77 +54,3 @@ fun MyBottomBar(
         }
     }
 }
-
-/*
-    OLD BOTTOM:
-
-    @Composable
-fun Bottom(navigationController: NavController, listScreenViewModel: ListScreenViewModel) {
-    Row(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Button(
-            onClick = {
-                navigationController.navigate(Routes.DetailScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Colores.Lila.color // Set the text/icon color of the button
-            ), enabled = listScreenViewModel.pillarGhibli().title != ""
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Back",
-                tint = Color.White
-            )
-        }
-        Button(
-            onClick = {
-                navigationController.navigate(Routes.DetailScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Colores.Lila.color // Set the text/icon color of the button
-            )
-        ) {
-            Icon(
-                imageVector = Icons.Default.Favorite,
-                contentDescription = "Favorite",
-                tint = Color.White
-            )
-        }
-        Button(
-            onClick = {
-                navigationController.navigate(Routes.ListScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Colores.Lila.color // Set the text/icon color of the button
-            )
-
-        ) {
-            Icon(
-                imageVector = Icons.Default.List,
-                contentDescription = "List",
-                tint = Color.White
-            )
-        }
-        Button(
-            onClick = {
-                navigationController.navigate(Routes.CharScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Colores.Lila.color // Set the text/icon color of the button
-            )
-
-        ) {
-            Icon(
-                imageVector = Icons.Default.Face,
-                contentDescription = "List",
-                tint = Color.White
-            )
-        }
-    }
-}
-
- */
