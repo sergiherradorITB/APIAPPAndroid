@@ -56,6 +56,7 @@ import com.example.apilist_sergiherrador.Model.DetailFilmItem
 import com.example.apilist_sergiherrador.Model.PersonaItem
 import com.example.apilist_sergiherrador.R
 import com.example.apilist_sergiherrador.Routes
+import com.example.apilist_sergiherrador.View.Charging
 import com.example.apilist_sergiherrador.View.MyBottomBar
 import com.example.apilist_sergiherrador.View.PersonaScreen.personaItem
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
@@ -77,16 +78,7 @@ fun DetailScreen(
     apiViewModel.isFavorite(oneFilmDetailed)
 
     if (showLoading) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier.width(64.dp),
-                color = MaterialTheme.colorScheme.secondary
-            )
-        }
+        Charging()
     } else {
         val context = LocalContext.current
         val fontFamily = remember {
