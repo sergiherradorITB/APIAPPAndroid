@@ -126,10 +126,8 @@ private fun ListScreenContent(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 val filteredCharacters = films.filter { ghibli ->
-                    ghibli.title.lowercase()
-                        .contains(searchText) || ghibli.original_title.contains(
-                        searchText
-                    )
+                    ghibli.title
+                        .contains(searchText, ignoreCase = true) || ghibli.original_title.contains(searchText,ignoreCase = true)
                 }
                 items(filteredCharacters) {
                     GhibliItem(

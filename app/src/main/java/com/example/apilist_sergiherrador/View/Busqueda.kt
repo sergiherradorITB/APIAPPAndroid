@@ -27,8 +27,8 @@ fun MySearchBar(myViewModel:APIViewModel){
     val searchText by myViewModel.searchText.observeAsState("")
     SearchBar(
         query = searchText,
-        onQueryChange = {myViewModel.onSearchTextChange(it.lowercase())},
-        onSearch = { myViewModel.onSearchTextChange(it.lowercase())},
+        onQueryChange = {myViewModel.onSearchTextChange(it)},
+        onSearch = { myViewModel.onSearchTextChange(it)},
         active = true,
         leadingIcon = { Icon(imageVector = Icons.Filled.Search, contentDescription = "Search")},
         placeholder = { Text("What are you looking for?")},
