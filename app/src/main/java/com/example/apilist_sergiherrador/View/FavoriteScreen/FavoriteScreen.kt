@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.NavController
 import com.example.apilist_sergiherrador.Model.DetailFilmItem
+import com.example.apilist_sergiherrador.R
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
 import com.example.apilist_sergiherrador.ViewModel.ListDetailScreenViewModel
-import com.example.apilist_sergiherrador.R
 import com.example.apilist_sergiherrador.View.Charging
 import com.example.apilist_sergiherrador.View.MyBottomBar
 import com.example.apilist_sergiherrador.View.MySearchBar

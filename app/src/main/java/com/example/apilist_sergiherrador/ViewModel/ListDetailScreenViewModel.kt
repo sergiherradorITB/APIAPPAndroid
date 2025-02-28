@@ -14,7 +14,6 @@ import com.example.apilist_sergiherrador.Model.AllFilms
 import com.example.apilist_sergiherrador.Model.DetailFilmItem
 import com.example.apilist_sergiherrador.Model.LocationItem
 import com.example.apilist_sergiherrador.Model.SpeciesItem
-import com.example.apilist_sergiherrador.R
 
 class ListDetailScreenViewModel : ViewModel() {
     // private var ghibli: AllFilms by mutableStateOf(AllFilms("", "", "", "", "", "", ""))

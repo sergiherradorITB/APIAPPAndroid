@@ -30,7 +30,6 @@ import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.apilist_sergiherrador.Model.AllFilms
 import com.example.apilist_sergiherrador.Model.DetailFilmItem
-import com.example.apilist_sergiherrador.R
 import com.example.apilist_sergiherrador.Routes
 import com.example.apilist_sergiherrador.View.MyBottomBar
 import com.example.apilist_sergiherrador.ViewModel.APIViewModel
