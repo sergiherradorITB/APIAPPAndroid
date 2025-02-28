@@ -166,14 +166,6 @@ fun LocationDetailScreen(
                             fontSize = 33.sp
                         )
 
-                        // Descripción
-                        Text(
-                            text = oneLocationDetailed.climate,
-                            modifier = Modifier.fillMaxWidth(),
-                            maxLines = 5,
-                            overflow = TextOverflow.Ellipsis
-                        )
-
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -183,8 +175,8 @@ fun LocationDetailScreen(
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
 
-                                Text(text = "Classification: ${oneLocationDetailed.surface_water}")
-                                Text(text = "Hair Colors: ${oneLocationDetailed.climate}")
+                                Text(text = "Porcentaje de superficie de agua: ${oneLocationDetailed.surface_water}")
+                                Text(text = "Clima: ${oneLocationDetailed.climate}")
                             }
                         }
                     }
@@ -208,7 +200,7 @@ fun LocationDetailScreen(
                             oneLocationDetailed.films ?: emptyList() // Manejo de lista nula
 
                         Text(
-                            text = "Characters that appears on ${oneLocationDetailed.name}: ",
+                            text = "Personajes que aparecen en ${oneLocationDetailed.name}: ",
                             modifier = Modifier.padding(top = 8.dp)
                         )
                         Box(
@@ -224,7 +216,7 @@ fun LocationDetailScreen(
                         ) {
                             if (PeopleUrls.isEmpty()) {
                                 Text(
-                                    text = "No characters found in the API",
+                                    text = "No personajes encontrados en la API",
                                     modifier = Modifier.fillMaxSize(),
                                     textAlign = TextAlign.Center
                                 )
@@ -244,7 +236,7 @@ fun LocationDetailScreen(
                         }
 
                         Text(
-                            text = "Films that ${oneLocationDetailed.name} appears: ",
+                            text = "Películas en las que aparece ${oneLocationDetailed.name}: ",
                             modifier = Modifier.padding(top = 8.dp)
                         )
                         Box(

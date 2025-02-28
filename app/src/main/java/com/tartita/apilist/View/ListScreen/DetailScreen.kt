@@ -141,9 +141,9 @@ fun DetailScreen(
                         val moviePeopleUrls = oneFilmDetailed.people
                         Text(
                             text = if (moviePeopleUrls[0] == "https://ghibliapi.vercel.app/people/")
-                                "No personatges trobats a l'API"
+                                "No Personajes encontrados en la API"
                             else
-                                "Pesonatges: ",
+                                "Personajes: ",
                             modifier = Modifier.padding(top = 8.dp)
                         )
                         LazyColumn(

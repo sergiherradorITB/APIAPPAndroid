@@ -166,7 +166,7 @@ fun SpeciesDetailScreen(
                         )
                         // Descripción
                         Text(
-                            text = "Eye colors: ${oneSpecieDetailed.eye_colors}",
+                            text = "Color de ojos: ${oneSpecieDetailed.eye_colors}",
                             modifier = Modifier.fillMaxWidth(),
                             maxLines = 5,
                             overflow = TextOverflow.Ellipsis
@@ -179,8 +179,8 @@ fun SpeciesDetailScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(text = "Classification: ${oneSpecieDetailed.classification}")
-                                Text(text = "Hair Colors: ${oneSpecieDetailed.hair_colors}")
+                                Text(text = "Clasificación: ${oneSpecieDetailed.classification}")
+                                Text(text = "Color del pelo: ${oneSpecieDetailed.hair_colors}")
                             }
                         }
                     }
@@ -198,7 +198,7 @@ fun SpeciesDetailScreen(
                         val FilmsUrls = oneSpecieDetailed.films
 
                         Text(
-                            text = "Films that ${oneSpecieDetailed.name} appears: ",
+                            text = "Películas en las que aparece ${oneSpecieDetailed.name}: ",
                             modifier = Modifier.padding(top = 8.dp)
                         )
                         Box(
@@ -220,9 +220,9 @@ fun SpeciesDetailScreen(
                         }
                         Text(
                             text = if (PeopleUrls[0] == "https://ghibliapi.vercel.app/people/")
-                                "No personatges trobats a l'API"
+                                "No se encontraron personajes en la API"
                             else
-                                "Characters that are ${oneSpecieDetailed.name}: ",
+                                "Personajes que son ${oneSpecieDetailed.name}: ",
                             modifier = Modifier.padding(top = 8.dp)
                         )
                         Box(

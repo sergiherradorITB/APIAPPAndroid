@@ -77,7 +77,7 @@ fun InformationAboutItem(
                         style = TextStyle(fontWeight = FontWeight.Bold)
                     )
                     Text(
-                        text = "${oneFilmDetailed.rt_score}",
+                        text = oneFilmDetailed.rt_score,
                     )
                 }
                 Row {
@@ -86,7 +86,7 @@ fun InformationAboutItem(
                         style = TextStyle(fontWeight = FontWeight.Bold)
                     )
                     Text(
-                        text = "${oneFilmDetailed.director}",
+                        text = oneFilmDetailed.director,
                     )
                 }
                 Row {
@@ -95,7 +95,7 @@ fun InformationAboutItem(
                         style = TextStyle(fontWeight = FontWeight.Bold)
                     )
                     Text(
-                        text = "${oneFilmDetailed.release_date}",
+                        text = oneFilmDetailed.release_date,
                     )
                 }
             }
