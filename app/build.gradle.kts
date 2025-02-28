@@ -5,11 +5,11 @@
     }
 
     android {
-        namespace = "com.example.apilist_sergiherrador"
+        namespace = "com.tartita.apilist_sergiherrador"
         compileSdk = 34
 
         defaultConfig {
-            applicationId = "com.example.apilist_sergiherrador"
+            applicationId = "com.tartita.apilist_sergiherrador"
             minSdk = 24
             targetSdk = 34
             versionCode = 1
