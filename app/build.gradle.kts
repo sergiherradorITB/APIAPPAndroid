@@ -5,15 +5,15 @@
     }
 
     android {
-        namespace = "com.tartita.apilist_sergiherrador"
+        namespace = "com.tartita.apilist"
         compileSdk = 34
 
         defaultConfig {
-            applicationId = "com.tartita.apilist_sergiherrador"
+            applicationId = "com.tartita.apilist"
             minSdk = 24
             targetSdk = 34
-            versionCode = 1
-            versionName = "1.0"
+            versionCode = 2
+            versionName = "1.1"
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             vectorDrawables {
