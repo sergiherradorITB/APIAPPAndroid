@@ -11,7 +11,7 @@
         defaultConfig {
             applicationId = "com.example.apilist_sergiherrador"
             minSdk = 24
-            targetSdk = 33
+            targetSdk = 34
             versionCode = 1
             versionName = "1.0"
 
@@ -38,6 +38,7 @@
         kotlinOptions {
             jvmTarget = "17"
         }
+
         buildFeatures {
             compose = true
         }
